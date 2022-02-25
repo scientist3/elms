@@ -12,17 +12,17 @@
           <div class="row">
             <div class="col-md-12">
 
-              <form role="form" action="<?php echo site_url('admin/department/create') ?>" method="post" id="save_type_form">
-                <?php echo form_hidden('dept_id', $input->dept_id) ?>
+              <form role="form" action="<?php echo site_url('admin/designation/create') ?>" method="post" id="save_type_form">
+                <?php echo form_hidden('desg_id', $input->desg_id) ?>
 
                 <div class="row">
 
                   <!-- status_name -->
                   <div class="col-sm-12">
                     <div class="form-group">
-                      <label for="dept_name"><?php echo ('Name'); ?></label> <small class="req"> *</small>
-                      <input name="dept_name" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Name') ?>" id="dept_name" value="<?php echo $input->dept_name; ?>" data-toggle="tooltip" title="<?php echo ('Department Name'); ?>">
-                      <?php echo form_error('dept_name', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                      <label for="desg_name"><?php echo ('Name'); ?></label> <small class="req"> *</small>
+                      <input name="desg_name" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Designation Name') ?>" id="desg_name" value="<?php echo $input->desg_name; ?>" data-toggle="tooltip" title="<?php echo ('Designation Name'); ?>">
+                      <?php echo form_error('desg_name', '<span class="badge bg-danger p-1">', '</span>'); ?>
                     </div>
                   </div>
 
@@ -38,22 +38,22 @@
                   <!-- Satus -->
                   <div class="col-sm-12">
                     <div class="form-group ">
-                      <label for="dept_status"><?php echo ('Status'); ?></label>
+                      <label for="desg_status"><?php echo ('Status'); ?></label>
                       <div class="form-check row form-inline form-control-sm">
                         <div class="col-6 form-inline">
                           <label class=" radio-inline">
-                            <input type="radio" name="dept_status" value="1" <?= ($input->dept_status == '1') ? 'checked' : null; ?> data-toggle="tooltip" title="Active status">&nbsp;
+                            <input type="radio" name="desg_status" value="1" <?= ($input->desg_status == '1' || ($input->desg_status != '0')) ? 'checked' : null; ?> data-toggle="tooltip" title="Active status">&nbsp;
                             <?php echo ('Active') ?>
                           </label>
                         </div>
                         <div class="col-6 form-inline">
                           <label class=" radio-inline">
-                            <input type="radio" name="dept_status" value="0" <?= ($input->dept_status == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled status"> &nbsp;<?php echo ('Inactive') ?>
+                            <input type="radio" name="desg_status" value="0" <?= ($input->desg_status == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled status"> &nbsp;<?php echo ('Inactive') ?>
                           </label>
                         </div>
                         <br>
                       </div>
-                      <?php echo form_error('dept_status', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                      <?php echo form_error('desg_status', '<span class="badge bg-danger p-1">', '</span>'); ?>
                     </div>
                   </div>
                   <!-- </div> 
@@ -87,7 +87,7 @@
       <div class="card">
         <div class="card-header bg-dark">
           <h3 class="card-title">
-            <i class="fa fa-list"></i> Department List
+            <i class="fa fa-list"></i> designation List
           </h3>
           <!-- <a class="btn btn-warning pull-right" href="< ?= base_url('admin/transaction/payment_report/').$search->start_date.'/'.$search->end_date; ?>"><i class="fa fa-print"></i></a> -->
         </div>
@@ -104,21 +104,21 @@
               </tr>
             </thead>
             <tbody>
-              <?php if (!empty($departments)) { ?>
+              <?php if (!empty($designations)) { ?>
                 <?php $sl = 1; ?>
-                <?php foreach ($departments as $department) { ?>
+                <?php foreach ($designations as $designation) { ?>
                   <tr>
                     <td><?php echo $sl; ?></td>
-                    <td><?php echo $department->dept_name ?></td>
+                    <td><?php echo $designation->desg_name ?></td>
                     <td class="text-center">
-                      <?php echo ($department->dept_status) ?
-                        '<i class="fa fa-check" aria-hidden="true"></i>' :
-                        '<i class="fa fa-times" aria-hidden="true"></i>'; ?>
+                      <?php echo ($designation->desg_status) ?
+                        '<i class="fa fa-check text-green" aria-hidden="true"></i>' :
+                        '<i class="fa fa-times text-red" aria-hidden="true"></i>'; ?>
                     </td>
                     <td class="text-center" width="100">
-                      <?php if (!in_array($department->dept_id, [])) { ?>
-                        <a href="<?php echo base_url("admin/department/edit/$department->dept_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>
-                        <a href="<?php echo base_url("admin/department/delete/$department->dept_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a>
+                      <?php if (!in_array($designation->desg_id, [])) { ?>
+                        <a href="<?php echo base_url("admin/designation/edit/$designation->desg_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>
+                        <a href="<?php echo base_url("admin/designation/delete/$designation->desg_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a>
                       <?php } ?>
                     </td>
                   </tr>
@@ -148,18 +148,18 @@
     $(function() {
       // $('#save_type_form').validate({
       //   rules: {
-      //     dept_name: {
+      //     desg_name: {
       //       required: true,
       //     },
-      //     dept_status: {
+      //     desg_status: {
       //       required: true,
       //     }
       //   },
       //   messages: {
-      //     dept_name: {
+      //     desg_name: {
       //       required: "Please provide a Property Label Name"
       //     },
-      //     dept_status: {
+      //     desg_status: {
       //       required: "Please select status"
       //     }
       //   },

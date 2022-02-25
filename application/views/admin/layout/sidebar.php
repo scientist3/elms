@@ -85,8 +85,8 @@
 
 
 				<!-- ############# Other Details #############-->
-				<li class="nav-item <?php echo (in_array($this->uri->segment(2), ["department", "type", "label", "feature"])) ? "menu-open" : null; ?>">
-					<a href="#" class="nav-link <?php echo (in_array($this->uri->segment(2), ["status", "type", "label", "feature"])) ? "active" : null; ?>">
+				<li class="nav-item <?php echo (in_array($this->uri->segment(2), ["department", "designation", "label", "feature"])) ? "menu-open" : null; ?>">
+					<a href="#" class="nav-link <?php echo (in_array($this->uri->segment(2), ["department", "designation", "label", "feature"])) ? "active" : null; ?>">
 						<i class="nav-icon fas fa-balance-scale"></i>
 						<p>
 							<?php echo ('Other Details') ?>
@@ -104,26 +104,25 @@
 						</li>
 
 						<li class="nav-item">
-							<a href="<?php echo base_url("admin/type") ?>" class="nav-link <?php echo ($this->uri->segment(2) == "type") ? "active" : null; ?>">
+							<a href="<?php echo base_url("admin/designation") ?>" class="nav-link <?php echo ($this->uri->segment(2) == "designation") ? "active" : null; ?>">
 								<i class="far fa-circle nav-icon"></i>
-								<p><?php echo ('add_view_type') ?></p>
+								<p><?php echo ('Add View Designation') ?></p>
 							</a>
 						</li>
-						<li class="nav-item">
+
+						<!-- <li class="nav-item">
 							<a href="<?php echo base_url("admin/status") ?>" class="nav-link <?php echo ($this->uri->segment(2) == "status") ? "active" : null; ?>">
 								<i class="far fa-circle nav-icon"></i>
 								<p><?php echo ('add_view_status') ?></p>
 							</a>
-						</li>
-
-
-
+						</li> -->
+						<!-- 
 						<li class="nav-item">
 							<a href="<?php echo base_url("admin/label") ?>" class="nav-link <?php echo ($this->uri->segment(2) == "label") ? "active" : null; ?>">
 								<i class="far fa-circle nav-icon"></i>
 								<p><?php echo ('add_view_label') ?></p>
 							</a>
-						</li>
+						</li> -->
 					</ul>
 				</li>
 
