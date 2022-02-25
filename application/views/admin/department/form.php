@@ -1,3 +1,7 @@
+<!-- DataTables -->
+<link href="<?= base_url('vendor/almasaeed2010/adminlte/') ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('vendor/almasaeed2010/adminlte/') ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('vendor/almasaeed2010/adminlte/') ?>plugins/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <!-- Main content -->
 <section class="content">
   <div class="row">
@@ -36,8 +40,8 @@
                   <!-- status_name -->
                   <div class="col-sm-12">
                     <div class="form-group">
-                      <label for="dept_name"><?php echo ('name'); ?></label> <small class="req"> *</small>
-                      <input name="dept_name" class="form-control form-control-sm" type="text" placeholder="<?php echo ('name') ?>" id="dept_name" value="<?php echo $input->dept_name; ?>" data-toggle="tooltip" title="<?php echo ('name'); ?>">
+                      <label for="dept_name"><?php echo ('Name'); ?></label> <small class="req"> *</small>
+                      <input name="dept_name" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Name') ?>" id="dept_name" value="<?php echo $input->dept_name; ?>" data-toggle="tooltip" title="<?php echo ('Department Name'); ?>">
                       <?php echo form_error('dept_name', '<span class="badge bg-danger p-1">', '</span>'); ?>
                     </div>
                   </div>
@@ -54,17 +58,17 @@
                   <!-- Satus -->
                   <div class="col-sm-12">
                     <div class="form-group ">
-                      <label for="dept_status"><?php echo ('status'); ?></label>
+                      <label for="dept_status"><?php echo ('Status'); ?></label>
                       <div class="form-check row form-inline form-control-sm">
                         <div class="col-6 form-inline">
                           <label class=" col-sm-6 radio-inline">
                             <input type="radio" name="dept_status" value="1" <?= ($input->dept_status == '1') ? 'checked' : null; ?> data-toggle="tooltip" title="Active status">
-                            <?php echo ('active') ?>
+                            <?php echo (' Active') ?>
                           </label>
                         </div>
                         <div class="col-6 form-inline">
                           <label class="col-sm-6 radio-inline">
-                            <input type="radio" name="dept_status" value="0" <?= ($input->dept_status == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled status"> &nbsp;<?php echo ('inactive') ?>
+                            <input type="radio" name="dept_status" value="0" <?= ($input->dept_status == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled status"> &nbsp;<?php echo ('Inactive') ?>
                           </label>
                         </div>
                         <br>
@@ -80,10 +84,10 @@
                     <div class="form-group">
                       <!-- <label>Submit</label> -->
                       <?php if ($this->uri->segment(3) != "edit") { ?>
-                        <button type="submit" name="save" value="add_station" class="form-control form-control-sm btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-plus"> &nbsp;<?php echo ('save'); ?></i></button>
+                        <button type="submit" name="save" value="add_station" class="form-control form-control-sm btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-plus"> &nbsp;<?php echo ('Save'); ?></i></button>
                       <?php } else { ?>
 
-                        <button type="submit" name="save" value="edit_station" class="form-control form-control-sm btn btn-warning btn-sm pull-right checkbox-toggle"><i class="fa fa-edit"> &nbsp;<?php echo ('update'); ?></i></button>
+                        <button type="submit" name="save" value="edit_station" class="form-control form-control-sm btn btn-warning btn-sm pull-right checkbox-toggle"><i class="fa fa-edit"> &nbsp;<?php echo ('Update'); ?></i></button>
                       <?php } ?>
                     </div>
                   </div>
@@ -112,29 +116,29 @@
           <table width="100%" class="datatable_colvis table table-striped table-bordered table-hover table-sm">
             <thead>
               <tr>
-                <th><?php echo ('unique_id') ?></th>
-                <th><?php echo ('name') ?></th>
+                <th><?php echo ('Unique Id') ?></th>
+                <th><?php echo ('Name') ?></th>
                 <!-- <th><?php echo ('parent') ?></th> -->
-                <th><?php echo ('status') ?></th>
-                <th><?php echo ('action') ?></th>
+                <th><?php echo ('Status') ?></th>
+                <th><?php echo ('Action') ?></th>
               </tr>
             </thead>
             <tbody>
-              <?php if (!empty($labels)) { ?>
+              <?php if (!empty($departments)) { ?>
                 <?php $sl = 1; ?>
-                <?php foreach ($labels as $label) { ?>
+                <?php foreach ($departments as $department) { ?>
                   <tr>
                     <td><?php echo $sl; ?></td>
-                    <td><?php echo $label->dept_name ?></td>
+                    <td><?php echo $department->dept_name ?></td>
                     <td class="text-center">
-                      <?php echo ($label->dept_status) ?
+                      <?php echo ($department->dept_status) ?
                         '<i class="fa fa-check" aria-hidden="true"></i>' :
                         '<i class="fa fa-times" aria-hidden="true"></i>'; ?>
                     </td>
                     <td class="text-center" width="100">
-                      <?php if (!in_array($label->dept_id, [1, 3])) { ?>
-                        <a href="<?php echo base_url("admin/label/edit/$label->dept_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>
-                        <a href="<?php echo base_url("admin/label/delete/$label->dept_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a>
+                      <?php if (!in_array($department->dept_id, [])) { ?>
+                        <a href="<?php echo base_url("admin/department/edit/$department->dept_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>
+                        <a href="<?php echo base_url("admin/department/delete/$department->dept_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a>
                       <?php } ?>
                     </td>
                   </tr>
@@ -214,5 +218,124 @@
     // $(".dataTables_wrapper > div > div").each(function() {
     //   $(this).addClass('col-sm-6');
     // });
+  });
+</script>
+
+
+<!-- DataTables JavaScript -->
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables/jquery.dataTables.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/jszip/jszip.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/pdfmake/pdfmake.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/pdfmake/vfs_fonts.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-buttons/js/buttons.print.min.js"></script>
+
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+  "use strict";
+  $(document).ready(function() {
+
+    //bsCustomFileInput.init();
+    //datatable
+    $('.datatable').DataTable({
+      responsive: true,
+      dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
+      "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+      ],
+      buttons: [{
+          extend: 'copy',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'csv',
+          title: 'ExampleFile',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'excel',
+          title: 'ExampleFile',
+          className: 'btn-sm',
+          title: 'exportTitle'
+        },
+        {
+          extend: 'pdf',
+          title: 'ExampleFile',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'print',
+          className: 'btn-sm'
+        }
+      ]
+    });
+
+    $('.simple_datatable').DataTable({
+      responsive: true,
+      dom: "<'row'<'col-sm-4'><'col-sm-4 text-center'B><'col-sm-4'>>",
+      "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+      ],
+      buttons: [{
+          extend: 'copy',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'csv',
+          title: 'ExampleFile',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'excel',
+          title: 'ExampleFile',
+          className: 'btn-sm',
+          title: 'exportTitle'
+        },
+        {
+          extend: 'pdf',
+          title: 'ExampleFile',
+          className: 'btn-sm'
+        },
+        {
+          extend: 'print',
+          className: 'btn-sm'
+        }
+      ]
+    });
+
+    // Datatable with column vis button only
+    $('.datatable_colvis').DataTable({
+      responsive: true,
+      dom: "<'row'<'col-sm-6 btn-sm'B><'col-sm-6 p-1'f>>tp",
+      "lengthChange": false,
+      "autoWidth": false,
+      "lengthMenu": [
+        [7, 10, 25, 50, -1],
+        [7, 10, 25, 50, "All"]
+      ],
+      buttons: [{
+        extend: 'colvis',
+        className: 'btn-sm'
+      }]
+    });
   });
 </script>

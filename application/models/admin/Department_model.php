@@ -76,7 +76,7 @@ class Department_model extends CI_Model
 
   public function delete($dept_id = null)
   {
-    $this->db->where('pl_id', $dept_id)
+    $this->db->where('dept_id', $dept_id)
       ->delete($this->table);
 
     if ($this->db->affected_rows() > 0) {
@@ -86,20 +86,20 @@ class Department_model extends CI_Model
     }
   }
 
-  public function read_by_id($pl_id = null)
+  public function read_by_id($dept_id = null)
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('pl_id', $pl_id)
+      ->where('dept_id', $dept_id)
       ->get()
       ->row_array();
   }
 
-  public function read_by_id_as_obj($pl_id = null)
+  public function read_by_id_as_obj($dept_id = null)
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('pl_id', $pl_id)
+      ->where('dept_id', $dept_id)
       ->get()
       ->row();
   }

@@ -69,7 +69,7 @@ class Department extends CI_Controller
         $data['title'] = ('Add View Department');
         $data['subtitle'] = ('Add Department');
         $data['user_role_list'] = $this->common_model->get_user_roles();
-        $data['department'] = $this->dept_model->read();
+        $data['departments'] = $this->dept_model->read();
         $data['contents'] = $this->load->view('admin/department/form', $data, true);
         $this->load->view('admin/layout/wrapper', $data);
       }
@@ -98,8 +98,8 @@ class Department extends CI_Controller
     if (empty($dept_id)) {
       redirect('admin/department/create');
     }
-    $data['title'] = ('add_view_label');
-    $data['subtitle'] = ('add_label');
+    $data['title'] = ('Add View Department');
+    $data['subtitle'] = ('Add Department');
     $data['user_role_list'] = $this->common_model->get_user_roles();
 
     #-------------------------------#
@@ -110,8 +110,8 @@ class Department extends CI_Controller
       'dept_name'   => $input->dept_name,
       'dept_status' => $input->dept_status
     );
-    $data['labels'] = $this->dept_model->read();
-    $data['content'] = $this->load->view('admin/department/form', $data, true);
+    $data['departments'] = $this->dept_model->read();
+    $data['contents'] = $this->load->view('admin/department/form', $data, true);
     $this->load->view('admin/layout/wrapper', $data);
   }
 
