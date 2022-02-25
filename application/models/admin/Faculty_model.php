@@ -1,19 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Department_model extends CI_Model
+class Faculty_model extends CI_Model
 {
 
-  private $table = "department_tbl";
+  private $table = "user_tbl";
 
   public function create($data = [])
   {
     return $this->db->insert($this->table, $data);
   }
 
-  public function read()
+  public function read($user_role = null)
   {
     return $this->db->select("*")
       ->from($this->table)
+      ->where('u_user_role', $user_role)
       //->order_by('firstname', 'asc')
       ->get()
       ->result();
@@ -33,12 +34,12 @@ class Department_model extends CI_Model
     $result = $this->db->select("*")
       ->from($this->table)
       //->where('page_name',$page_name)
-      ->order_by('dept_id', 'asc')
+      ->order_by('u_id', 'asc')
       ->get()
       ->result();
-    $list[''] = ('Select Department');
+    $list[''] = ('select_property_type');
     foreach ($result as $row) {
-      $list[$row->dept_id] = $row->dept_name; //." - ".$row->firstname;
+      $list[$row->u_id] = $row->u_name; //." - ".$row->firstname;
     }
     return $list;
   }
@@ -47,13 +48,13 @@ class Department_model extends CI_Model
   {
     $result = $this->db->select("*")
       ->from($this->table)
-      ->where('dept_status', 1)
-      ->order_by('dept_id', 'asc')
+      ->where('u_status', 1)
+      ->order_by('u_id', 'asc')
       ->get()
       ->result();
     $list[''] = ('select_property_type');
     foreach ($result as $row) {
-      $list[$row->dept_id] = $row->dept_name; //." - ".$row->firstname;
+      $list[$row->u_id] = $row->u_name; //." - ".$row->firstname;
     }
     return $list;
   }
@@ -62,7 +63,7 @@ class Department_model extends CI_Model
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('dept_id', $id)
+      ->where('u_id', $id)
       ->get()
       ->row_array();
   }
@@ -70,13 +71,13 @@ class Department_model extends CI_Model
 
   public function update($data = [])
   {
-    return $this->db->where('dept_id', $data['dept_id'])
+    return $this->db->where('u_id', $data['u_id'])
       ->update($this->table, $data);
   }
 
-  public function delete($dept_id = null)
+  public function delete($u_id = null)
   {
-    $this->db->where('dept_id', $dept_id)
+    $this->db->where('u_id', $u_id)
       ->delete($this->table);
 
     if ($this->db->affected_rows() > 0) {
@@ -86,20 +87,20 @@ class Department_model extends CI_Model
     }
   }
 
-  public function read_by_id($dept_id = null)
+  public function read_by_id($u_id = null)
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('dept_id', $dept_id)
+      ->where('u_id', $u_id)
       ->get()
       ->row_array();
   }
 
-  public function read_by_id_as_obj($dept_id = null)
+  public function read_by_id_as_obj($u_id = null)
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('dept_id', $dept_id)
+      ->where('u_id', $u_id)
       ->get()
       ->row();
   }

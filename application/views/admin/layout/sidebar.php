@@ -40,7 +40,29 @@
 						</p>
 					</a>
 				</li>
+
+				<!-- ############# Add Faculty #############-->
+				<li class="nav-item <?php echo ($this->uri->segment(2) == "faculty") ? "menu-open" : null; ?>">
+					<a href="#" class="nav-link <?php echo ($this->uri->segment(2) == "faculty") || ($this->uri->segment(2) == "unit") ? "active" : null; ?>">
+						<i class="nav-icon fas fa-user"></i>
+						<p>
+							<?php echo ('Faculty') ?>
+							<i class="fas fa-angle-left right"></i>
+							<!-- <span class="badge badge-info right">6</span> -->
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo base_url("admin/faculty/index") ?>" class="nav-link <?php echo ($this->uri->segment(3) == "index") ? "active" : null; ?>">
+								<i class="far fa-circle nav-icon"></i>
+								<p><?php echo ('Add / View Faculty') ?></p>
+							</a>
+						</li>
+
+					</ul>
+				</li>
 				<!-- ############# Institution #############-->
+				<?php /*
 				<li class="nav-item <?php echo ($this->uri->segment(2) == "institution") ? "menu-open" : null; ?>">
 					<a href="#" class="nav-link <?php echo ($this->uri->segment(2) == "property") || ($this->uri->segment(2) == "unit") ? "active" : null; ?>">
 						<i class="nav-icon fas fa-building"></i>
@@ -59,7 +81,7 @@
 						</li>
 
 					</ul>
-				</li>
+				</li> */ ?>
 
 
 				<!-- ############# Other Details #############-->
