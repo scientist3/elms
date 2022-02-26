@@ -38,7 +38,7 @@ class Home  extends CI_Controller
 		$data['user']    = $this->user_model->profile($user_id);
 		$data['user_role_list'] = $this->common_model->get_user_roles();
 
-		print_r($data['user']);
+		// print_r($data['user']);
 		$data['contents'] = $this->load->view('faculty/profile', $data, true);
 		$this->load->view('faculty/layout/wrapper', $data);
 	}
