@@ -1,20 +1,19 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Faculty_model extends CI_Model
+class Leave_status_model extends CI_Model
 {
 
-  private $table = "user_tbl";
+  private $table = "leave_status_tbl";
 
   public function create($data = [])
   {
     return $this->db->insert($this->table, $data);
   }
 
-  public function read($user_role = null)
+  public function read()
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('u_user_role', $user_role)
       //->order_by('firstname', 'asc')
       ->get()
       ->result();
@@ -34,12 +33,12 @@ class Faculty_model extends CI_Model
     $result = $this->db->select("*")
       ->from($this->table)
       //->where('page_name',$page_name)
-      ->order_by('u_id', 'asc')
+      ->order_by('ls_id', 'asc')
       ->get()
       ->result();
-    $list[''] = ('Select Faculty');
+    $list[''] = ('Select leave_status');
     foreach ($result as $row) {
-      $list[$row->u_id] = $row->u_name; //." - ".$row->firstname;
+      $list[$row->ls_id] = $row->ls_name; //." - ".$row->firstname;
     }
     return $list;
   }
@@ -48,13 +47,13 @@ class Faculty_model extends CI_Model
   {
     $result = $this->db->select("*")
       ->from($this->table)
-      ->where('u_status', 1)
-      ->order_by('u_id', 'asc')
+      ->where('desg_status', 1)
+      ->order_by('ls_id', 'asc')
       ->get()
       ->result();
     $list[''] = ('select_property_type');
     foreach ($result as $row) {
-      $list[$row->u_id] = $row->u_name; //." - ".$row->firstname;
+      $list[$row->ls_id] = $row->ls_name; //." - ".$row->firstname;
     }
     return $list;
   }
@@ -63,7 +62,7 @@ class Faculty_model extends CI_Model
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('u_id', $id)
+      ->where('ls_id', $id)
       ->get()
       ->row_array();
   }
@@ -71,13 +70,13 @@ class Faculty_model extends CI_Model
 
   public function update($data = [])
   {
-    return $this->db->where('u_id', $data['u_id'])
+    return $this->db->where('ls_id', $data['ls_id'])
       ->update($this->table, $data);
   }
 
-  public function delete($u_id = null)
+  public function delete($ls_id = null)
   {
-    $this->db->where('u_id', $u_id)
+    $this->db->where('ls_id', $ls_id)
       ->delete($this->table);
 
     if ($this->db->affected_rows() > 0) {
@@ -87,32 +86,21 @@ class Faculty_model extends CI_Model
     }
   }
 
-  public function read_by_id($u_id = null)
+  public function read_by_id($ls_id = null)
   {
-    return $this->db->select($this->table . ".*, designation_tbl.desg_name, department_tbl.dept_name")
+    return $this->db->select("*")
       ->from($this->table)
-      ->where('u_id', $u_id)
-      ->join('designation_tbl', 'desg_id = ' . $this->table . '.u_desg_id', 'left')
-      ->join('department_tbl', 'dept_id = ' . $this->table . '.u_dept_id', 'left')
+      ->where('ls_id', $ls_id)
       ->get()
       ->row_array();
   }
 
-  public function read_by_id_as_obj($u_id = null)
+  public function read_by_id_as_obj($ls_id = null)
   {
     return $this->db->select("*")
       ->from($this->table)
-      ->where('u_id', $u_id)
+      ->where('ls_id', $ls_id)
       ->get()
       ->row();
-  }
-
-  public function get_faculty_designation($user_id)
-  {
-    return $this->db->select("u_desg_id")
-      ->from($this->table)
-      ->where('u_id', $user_id)
-      ->get()
-      ->row()->u_desg_id;
   }
 }

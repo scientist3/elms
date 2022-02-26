@@ -10,7 +10,8 @@ class Login extends CI_Controller
 
 		$this->load->model(array(
 			'login_model',
-			'user_model'
+			'user_model',
+			'setting_model',
 		));
 	}
 
@@ -27,10 +28,13 @@ class Login extends CI_Controller
 		$data['user'] /* = (object)$postData */ = [
 			'u_email'   => $this->input->post('email', true),
 			'u_pass'  	=> md5($this->input->post('password', true)),
-			'u_role' 	=> $this->input->post('user_role', true),
+			'u_role' 		=> $this->input->post('user_role', true),
 		];
 		$data['user_role_list'] = $this->user_model->get_user_role();
 
+		/* -------------------------------- */
+		$setting = $this->setting_model->read();
+		$data['settings'] = $setting;
 		if ($this->form_validation->run() === true) {
 			$check_user = $this->login_model->check_user($data['user']);
 			//print_r($check_user->row());
@@ -41,8 +45,16 @@ class Login extends CI_Controller
 					'email'         => $check_user->row()->u_email,
 					'fullname'      => $check_user->row()->u_name,
 					'user_role'     => $check_user->row()->u_user_role,
-					'picture'       => !empty($check_user->row()->u_picture) ? $check_user->row()->u_picture : 'assetslte/images/noimage.png',
+					'user_desg'     => $check_user->row()->u_desg_id,
+					'user_dept'     => $check_user->row()->u_dept_id,
+					'picture'       => !empty($check_user->row()->u_picture) ? $check_user->row()->u_picture : 'uploads/noimageold.png',
 					'create_date'     => $check_user->row()->u_doc,
+					/* Saving Setting Into Session*/
+					'title'         => (!empty($setting->title) ? $setting->title : null),
+					'address'       => (!empty($setting->description) ? $setting->description : null),
+					'logo'          => (!empty($setting->logo) ? $setting->logo : null),
+					'favicon'          => (!empty($setting->favicon) ? $setting->favicon : null),
+					'footer_text'     => (!empty($setting->footer_text) ? $setting->footer_text : null),
 				]);
 				$this->redirectTo($data['user']['u_role']);
 
@@ -63,16 +75,16 @@ class Login extends CI_Controller
 		//$this->save_login_time();
 		switch ($user_role) {
 			case 1:
-				redirect('admin/institution/index');    // Admin
+				redirect('admin/home/index');    // Admin
 				break;
 
 			case 2:
-				redirect('student/home/index');     // Student
+				redirect('faculty/home/index');     // Faculty
 				break;
 
-			case 3:
-				redirect('teacher/home/index');     // Teacher
-				break;
+				// case 3:
+				// 	redirect('teacher/home/index');     // Teacher
+				// 	break;
 			default:
 				$this->logout();
 				//redirect('login');

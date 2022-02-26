@@ -1,11 +1,3 @@
-<?php
-defined('BASEPATH') or exit('No direct script access allowed');
-// $settings = $this->db->select("*")
-//     ->get('setting')
-//     ->row();
-
-// print_r($_SESSION);
-?>
 <!DOCTYPE html>
 <html lang="en">
 

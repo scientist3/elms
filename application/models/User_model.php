@@ -5,6 +5,7 @@ class User_model extends CI_Model
 {
 
 	private $user_role_tbl = "user_role_tbl";
+	private $table = "user_tbl";
 
 	public function get_user_role()
 	{
@@ -25,26 +26,45 @@ class User_model extends CI_Model
 		}
 	}
 
-	public function get_enrolled_student_list($exam_id = null)
+
+	public function profile($u_id = null)
 	{
-		$enrolledStudent = $this->db->select('se_u_id,u_name')
-			// ->from('user_tbl')
-			->from('student_exam_tbl')
-			->where('se_e_id', $exam_id)
-			->join('user_tbl', 'se_u_id=u_id', 'left')
-			->where('u_user_role', 2)
+		return $this->db->select($this->table . ".*, designation_tbl.desg_name, department_tbl.dept_name, user_role_tbl.ur_name")
+			->from($this->table)
+			->where('u_id', $u_id)
+			->join('designation_tbl', 'desg_id 	= ' . $this->table . '.u_desg_id', 'left')
+			->join('department_tbl',  'dept_id 	= ' . $this->table . '.u_dept_id', 'left')
+			->join('user_role_tbl',   'ur_id 		= ' . $this->table . '.u_user_role', 'left')
+			->get()
+			->row();
+	}
+	public function update($data = [])
+	{
+		return $this->db->where('u_id', $data['u_id'])
+			->update($this->table, $data);
+	}
+
+	public function read_faculty_as_list()
+	{
+		$result = $this->db->select('ur_id,ur_name')
+			->from($this->user_role_tbl)
+			->where('ur_status', '1')
 			->get()
 			->result();
 
-		// dd($enrolledStudent);
-		$list[''] = "All Students"; //display('select_user_role');
-		if (!empty($enrolledStudent)) {
-			foreach ($enrolledStudent as $value) {
-				$list[$value->se_u_id] = ($value->u_name);
+		$list[''] = "Select User Role"; //display('select_user_role');
+		if (!empty($result)) {
+			foreach ($result as $value) {
+				$list[$value->ur_id] = ($value->ur_name);
 			}
 			return $list;
 		} else {
 			return false;
 		}
 	}
+
+	// public function get_facutl(Type $var = null)
+	// {
+	// 	# code...
+	// }
 }

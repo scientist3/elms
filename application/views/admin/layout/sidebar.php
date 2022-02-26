@@ -83,6 +83,26 @@
 					</ul>
 				</li> */ ?>
 
+				<!-- ############# Add leave #############-->
+				<li class="nav-item <?php echo ($this->uri->segment(2) == "leave") ? "menu-open" : null; ?>">
+					<a href="#" class="nav-link <?php echo ($this->uri->segment(2) == "leave") || ($this->uri->segment(2) == "unit") ? "active" : null; ?>">
+						<i class="nav-icon fas fa-power-off"></i>
+						<p>
+							<?php echo ('Leave / Time Off') ?>
+							<i class="fas fa-angle-left right"></i>
+							<!-- <span class="badge badge-info right">6</span> -->
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo base_url("admin/leave/index") ?>" class="nav-link <?php echo ($this->uri->segment(3) == "index") ? "active" : null; ?>">
+								<i class="far fa-circle nav-icon"></i>
+								<p><?php echo ('View / Approve Leave') ?></p>
+							</a>
+						</li>
+
+					</ul>
+				</li>
 
 				<!-- ############# Other Details #############-->
 				<li class="nav-item <?php echo (in_array($this->uri->segment(2), ["department", "designation", "label", "feature"])) ? "menu-open" : null; ?>">
@@ -131,7 +151,7 @@
 					<a href="#" class="nav-link <?php echo ($this->uri->segment(2) == "setting") ? "active" : null; ?>">
 						<i class="nav-icon fas fa-cogs"></i>
 						<p>
-							<?php echo ('settings') ?>
+							<?php echo ('Settings') ?>
 							<i class="fas fa-angle-left right"></i>
 							<!-- <span class="badge badge-info right">6</span> -->
 						</p>
@@ -140,7 +160,7 @@
 						<li class="nav-item">
 							<a href="<?php echo base_url("setting") ?>" class="nav-link <?php echo ($this->uri->segment(1) == "setting") ? "active" : null; ?>">
 								<i class="far fa-circle nav-icon"></i>
-								<p><?php echo ('app_setting') ?></p>
+								<p><?php echo ('Institution Setting') ?></p>
 							</a>
 						</li>
 
