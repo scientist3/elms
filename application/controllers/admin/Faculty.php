@@ -48,25 +48,12 @@ class Faculty extends CI_Controller
       'u_desg_id'       => $this->input->post('u_desg_id'),
       'u_dept_id'       => $this->input->post('u_dept_id'),
       'u_name'          => $this->input->post('u_name'),
-      // 'u_username'      => $this->input->post('u_username'),
       'u_email'         => $this->input->post('u_email'),
       'u_password'      => $this->input->post('u_password'),
       'u_mobile'        => $this->input->post('u_mobile'),
-      // 'u_adress'        => $this->input->post('u_adress'),
-      // 'u_picture'       => $this->input->post('u_picture'),
-      // 'u_user_approval' => 1,
-      // 'u_doc'           => $this->input->post('u_doc'),
       'u_dou'           => date('Y-m-d H:m:s'),
       'u_status'        => $this->input->post('u_status'),
     );
-
-    // $input = $data['input'];
-    #----------------- User Object -------------#
-    // $data['user'] = (object)$postDataUser = array(
-    //   'u_id'     => $input->u_id,
-    //   'dept_name'   => $input->dept_name,
-    //   'dept_status' => $input->dept_status
-    // );
 
     /*-----------CHECK ID -----------*/
     if (empty($u_id)) {
@@ -82,8 +69,8 @@ class Faculty extends CI_Controller
         redirect('admin/faculty/index');
       } else {
         #------------- Default Form Section Display ---------#
-        $data['title'] = ('Add View Department');
-        $data['subtitle'] = ('Add Department');
+        $data['title'] = ('Add View Faculty');
+        $data['subtitle'] = ('Add Faculty');
         $data['user_role_list'] = $this->common_model->get_user_roles();
         $data['designation_list'] = $this->desg_model->read_as_list();
         $data['department_list'] = $this->dept_model->read_as_list();
