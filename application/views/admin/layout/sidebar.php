@@ -164,7 +164,7 @@
 							</a>
 						</li>
 
-						<li class="nav-item">
+						<li class="nav-item d-none">
 							<a href="<?php echo base_url("language") ?>" class="nav-link <?php echo ($this->uri->segment(1) == "language") ? "active" : null; ?>">
 								<i class="far fa-circle nav-icon"></i>
 								<p><?php echo ('language') ?></p>
@@ -175,10 +175,10 @@
 
 				<!--############# Contact#############-->
 				<li class="nav-item">
-					<a href="<?php echo base_url("contactus/index") ?>" class="nav-link <?php echo ($this->uri->segment(1) == "contactus") ? "active" : null; ?>">
+					<a href="#<?php echo base_url("contactus/index") ?>" class="nav-link <?php echo ($this->uri->segment(1) == "contactus") ? "active" : null; ?>">
 						<i class="nav-icon fas fa-th"></i>
 						<p>
-							<?php echo ('message') ?>
+							<?php echo ('Message') ?>
 							<span class="right badge badge-danger"><?php echo !empty($new_messages) ? 'New' : ''; ?></span>
 						</p>
 					</a>

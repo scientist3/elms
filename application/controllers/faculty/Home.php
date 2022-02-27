@@ -24,7 +24,7 @@ class Home  extends CI_Controller
 		// $data['user'] = array();
 		// $data['user'] = array();
 		$data['user_role_list'] = $this->common_model->get_user_roles();
-		// $data['contents'] = $this->load->view("home/Home_view",$data,true);
+		$data['contents'] = $this->load->view("faculty/home/home_view", $data, true);
 		$this->load->view("faculty/layout/wrapper", $data);
 	}
 

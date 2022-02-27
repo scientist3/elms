@@ -74,11 +74,11 @@ class Leave extends CI_Controller
         if ($this->leave_model->create($postDataInp)) {
           #set success message
           $this->session->set_flashdata('message', ('save_successfully'));
-          redirect('faculty/leave/create');
+          redirect('faculty/leave/index');
         } else {
           #set exception message
           $this->session->set_flashdata('exception', ('please_try_again'));
-          redirect('faculty/leave/create');
+          redirect('faculty/leave/index');
         }
       } else {
         #------------- Default Form Section Display ---------#
