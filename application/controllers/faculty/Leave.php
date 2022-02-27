@@ -28,7 +28,10 @@ class Leave extends CI_Controller
     $leave_id = $this->input->post('l_id');
     $full_or_half_day = $this->input->post('l_is_half_day');
     $first_or_second_half = $this->input->post('l_first_or_second_half');
+    $data['leave_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 
+
+    // print_r($data);
     $data['full_half_list'] = [
       'full_day' => 'Full Day',
       'half_day' => 'Half Day',
@@ -90,11 +93,8 @@ class Leave extends CI_Controller
         $user_desg = $this->session->userdata('user_desg');
         $data['leave_types_list'] = $this->ltdm_model->read_leave_type_by_designation($user_desg);
         $data['leave_status_list'] = $this->ls_model->read_as_list();
-        $data['leaves'] = $this->leave_model->read_with_join();
-        // echo "<pre>";
-        // print_r($data['input']);
-        // print_r($_SESSION);
-        // echo "</pre>";
+        $data['leaves'] = $this->leave_model->read_with_join_by_faculty_id($this->user_id);
+
         $data['contents'] = $this->load->view('faculty/leave/form', $data, true);
         $this->load->view('faculty/layout/wrapper', $data);
       }
@@ -117,44 +117,6 @@ class Leave extends CI_Controller
     }
   }
 
-  private function view($l_id, $user_id)
-  {
-    // $this->create();
-    #------------- Default Form Section Display ---------#
-    $data['title'] = ('Leave | Time Off');
-    $data['subtitle'] = ('Add Time Off Request');
-    $data['user_role_list'] = $this->common_model->get_user_roles();
-
-    $data['faculty_details'] = (object) $this->f_model->read_by_id($user_id);
-
-    $desg_id = $data['faculty_details']->u_desg_id;
-
-    $data['leave_types_list'] = $this->ltdm_model->read_leave_type_by_designation($desg_id);
-    $data['leave_status_list'] = $this->ls_model->read_as_list();
-    $data['leave'] = $this->leave_model->read_with_join_by_id($l_id);
-
-    $data['contents'] = $this->load->view('faculty/leave/view', $data, true);
-    $this->load->view('faculty/layout/wrapper', $data);
-  }
-
-  public function update()
-  {
-    $l_id = $this->input->post('l_id');
-    $user_id = $this->input->post('l_user_id');
-
-    $postDataInp = [
-      'l_id'      => $this->input->post('l_id'),
-      'l_status'  => $this->input->post('l_status'),
-      'l_comments' => $this->input->post('l_comments')
-    ];
-
-    if ($this->leave_model->update($postDataInp)) {
-      $this->session->set_flashdata('message', ('update_successfully'));
-    } else {
-      $this->session->set_flashdata('exception', ('please_try_again'));
-    }
-    redirect('faculty/leave/view/' . $l_id . '/' . $user_id);
-  }
   # used functional
   public function edit($l_id = null)
   {
@@ -164,6 +126,7 @@ class Leave extends CI_Controller
     $data['title'] = ('Leave | Time Off');
     $data['subtitle'] = ('Add Time Off Request');
     $data['user_role_list'] = $this->common_model->get_user_roles();
+    $data['leave_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 
     $data['full_half_list'] = [
       'full_day' => 'Full Day',
@@ -178,7 +141,7 @@ class Leave extends CI_Controller
 
     $data['leave_types_list'] = $this->ltdm_model->read_leave_type_by_designation($user_desg);
     $data['leave_status_list'] = $this->ls_model->read_as_list();
-    $data['leaves'] = $this->leave_model->read_with_join();
+    $data['leaves'] = $this->leave_model->read_with_join_by_faculty_id($this->user_id);
 
     #-------------------------------#
     $input     = $this->leave_model->read_by_id_as_obj($l_id);

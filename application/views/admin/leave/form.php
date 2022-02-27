@@ -20,8 +20,8 @@
                 <th><?php echo ('Designation') ?></th>
                 <th><?php echo ('Department') ?></th>
                 <th><?php echo ('Type') ?></th>
-                <th><?php echo ('To Date') ?></th>
                 <th><?php echo ('From Date') ?></th>
+                <th><?php echo ('To Date') ?></th>
                 <th><?php echo ('Reason') ?></th>
                 <th><?php echo ('Status') ?></th>
                 <th><?php echo ('Action') ?></th>
@@ -37,9 +37,9 @@
                     <td><?php echo $leave->faculty_desg ?></td>
                     <td><?php echo $leave->faculty_dept ?></td>
                     <td><?php echo $leave->leave_type ?></td>
-                    <td><?php echo $leave->l_to_date ?></td>
-                    <td><?php echo $leave->l_from_date ?></td>
-                    <td><?php echo $leave->l_reason ?></td>
+                    <td><?php echo date('d-M-Y', strtotime($leave->l_from_date)) ?></td>
+                    <td><?php echo date('d-M-Y', strtotime($leave->l_to_date)) ?></td>
+                    <td><?php echo $out = strlen($leave->l_reason) > 50 ? substr($leave->l_reason, 0, 50) . "..." : $leave->l_reason; ?></td>
                     <td class="text-center">
                       <?php echo $leave->ls_name ?>
                     </td>

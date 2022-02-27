@@ -19,7 +19,7 @@ class Leave_model extends CI_Model
       ->result();
   }
 
-  public function read_with_join($returnAsArray = false)
+  public function read_with_join_by_faculty_id($u_id, $returnAsArray = false)
   {
     $this->db->select(
       "leaves_tbl.l_id,
@@ -48,6 +48,7 @@ class Leave_model extends CI_Model
     $this->db->join('leave_type_tbl',   'leave_type_tbl.lt_id     = leaves_tbl.l_leave_type_id',  'left');
     $this->db->join('leave_status_tbl', 'leave_status_tbl.ls_id   = leaves_tbl.l_status',       'left');
 
+    $this->db->where('user_tbl.u_id', $u_id);
     $this->db->order_by('leaves_tbl.l_applied_date', 'DESC');
 
     // $this->db->limit($limit, $start);
@@ -100,6 +101,32 @@ class Leave_model extends CI_Model
     }
   }
 
+  public function get_toal_leaves_by_status_by_user_id($u_id)
+  {
+    return $this->db->select(
+      'l_status,
+      l_user_id,
+      SUM( 
+        CASE
+          WHEN DATEDIFF( l_to_date,l_from_date) = 0 THEN 1
+          ELSE DATEDIFF( l_to_date,l_from_date) + 1
+        END) as total_days'
+    )
+      ->from('`leaves_tbl`')
+      ->where(array('`l_user_id`' => $u_id))
+      ->group_by('l_status')
+      ->order_by('`leaves_tbl`.`l_status` ASC')
+      ->get()->result();
+  }
+
+  public function read_allowed_leaves_by_leave_type($lt_id)
+  {
+    return $this->db
+      ->from($this->table)
+      ->join('property_label_tbl', 'p_pl_id=pl_id')
+      ->where('lower(pl_name) LIKE "%sold%"')
+      ->count_all_results();
+  }
   public function read_as_array()
   {
     return $this->db->select("*")

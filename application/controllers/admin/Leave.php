@@ -146,7 +146,8 @@ class Leave extends CI_Controller
     } else {
       $this->session->set_flashdata('exception', ('please_try_again'));
     }
-    redirect('admin/leave/view/' . $l_id . '/' . $user_id);
+    // redirect('admin/leave/view/' . $l_id . '/' . $user_id);
+    redirect('admin/leave/index');
   }
   # Not used functional
   private function edit($dept_id = null)

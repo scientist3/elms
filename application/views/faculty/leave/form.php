@@ -3,21 +3,40 @@
   <div class="row">
     <!-- Save -->
     <div class="col-sm-3">
-      <div class="card">
-        <div class="card-header bg-dark">
-          <h3 class="card-title"><i class="fa fa-plus"></i> Status</h3>
+
+      <div class="info-box">
+        <span class="info-box-icon bg-warning"><i class="far fa-clock"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Pending</span>
+          <span class="info-box-number"><?= $leave_status[0]->total_days; ?></span>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              Approved Leaves : 10<br>
-              Unapproved Leaves 2
-            </div>
-          </div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-box-icon bg-success"><i class="fa fa-check"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Approved</span>
+          <span class="info-box-number"><?= $leave_status[1]->total_days; ?></span>
         </div>
-        <div class="card-footer"></div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-box-icon bg-danger"><i class="fa fa-ban"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Rejected</span>
+          <span class="info-box-number"><?= $leave_status[2]->total_days; ?></span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-box-icon bg-info"><i class="fa fa-calculator"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Total</span>
+          <span class="info-box-number"><?= $leave_status[0]->total_days + $leave_status[1]->total_days + $leave_status[2]->total_days; ?></span>
+        </div>
       </div>
     </div>
+
     <div class="col-sm-9">
       <?php echo form_open('faculty/leave/index', ['method' => 'post', 'class' => '', 'id' => 'leave_form', 'enctype' => 'multipart/form-data']); ?>
       <div class="card">
@@ -100,15 +119,15 @@
           </div>
         </div>
         <div class="card-footer">
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-sm-4 offset-8">
               <div class="form-group mb-0">
                 <!-- <label>Submit</label> -->
                 <?php if ($this->uri->segment(3) != "edit") { ?>
-                  <button type="submit" name="save" value="add_station" class="form-control form-control-sm btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-plus"> &nbsp;<?php echo ('Save'); ?></i></button>
+                  <button type="submit" name="save" value="add_station" class="form-control  btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-plus"> &nbsp;<?php echo ('Save'); ?></i></button>
                 <?php } else { ?>
 
-                  <button type="submit" name="save" value="edit_station" class="form-control form-control-sm btn btn-warning btn-sm pull-right checkbox-toggle"><i class="fa fa-edit"> &nbsp;<?php echo ('Update'); ?></i></button>
+                  <button type="submit" name="save" value="edit_station" class="form-control  btn btn-warning btn-sm pull-right checkbox-toggle"><i class="fa fa-edit"> &nbsp;<?php echo ('Update'); ?></i></button>
                 <?php } ?>
               </div>
             </div>
@@ -159,11 +178,11 @@
                     <td><?php echo $leave->leave_type ?></td>
                     <td><?php echo date('d-M-Y', strtotime($leave->l_from_date)) ?></td>
                     <td><?php echo date('d-M-Y', strtotime($leave->l_to_date)) ?></td>
-                    <td><?php echo $leave->l_reason ?></td>
+                    <td><?php echo $out = strlen($leave->l_reason) > 50 ? substr($leave->l_reason, 0, 50) . "..." : $leave->l_reason; ?></td>
                     <td class="text-center">
-                      <?php echo $leave->ls_name ?>
+                      <span class="badge badge-info"><?php echo $leave->ls_name ?></span>
                     </td>
-                    <td><?php echo $leave->l_comments ?></td>
+                    <td><?php echo $out = strlen($leave->l_comments) > 300 ? substr($leave->l_comments, 0, 300) . "..." : $leave->l_comments; ?></td>
                     <td class="text-center" width="100">
                       <?php if (!in_array($leave->l_status, [2, 3])) { ?>
                         <a href="<?php echo base_url("faculty/leave/edit/$leave->l_id/$leave->u_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>

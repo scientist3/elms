@@ -13,16 +13,21 @@ class Home  extends CI_Controller
 		$this->load->model(array(
 			'common_model',
 			'user_model',
+			'faculty/leave_model'
 		));
 
 		// print_r($_SESSION);
+		$this->user_id = $this->session->userdata('user_id');
 	}
 
 	public function index()
 	{
 		$data['title'] = 'Faculty Home';
-		// $data['user'] = array();
-		// $data['user'] = array();
+
+		$data['total_pending_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 1);
+		$data['total_approved_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 2);
+		$data['total_rejected_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 3);
+
 		$data['user_role_list'] = $this->common_model->get_user_roles();
 		$data['contents'] = $this->load->view("faculty/home/home_view", $data, true);
 		$this->load->view("faculty/layout/wrapper", $data);
