@@ -36,6 +36,12 @@ class Login extends CI_Controller
 
 		/* -------------------------------- */
 		$setting = $this->setting_model->read();
+		$data['title']   = (!empty($setting->title) ? $setting->title : null);
+
+		$data['logo']    = (!empty($setting->logo) ? $setting->logo : null);
+		$data['favicon'] = (!empty($setting->favicon) ? $setting->favicon : null);
+		$data['footer_text'] = (!empty($setting->footer_text) ? $setting->footer_text : null);
+
 		$data['settings'] = $setting;
 		if ($this->form_validation->run() === true) {
 			$check_user = $this->login_model->check_user($data['user']);

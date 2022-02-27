@@ -14,6 +14,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo $title ?></title>
 
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="<?= base_url($this->session->userdata('favicon')) ?>">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->

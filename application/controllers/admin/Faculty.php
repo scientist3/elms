@@ -45,6 +45,7 @@ class Faculty extends CI_Controller
     $data['input'] = (object)$postDataInp = array(
       'u_id'            => $this->input->post('u_id'),
       'u_user_role'     => 2,
+      'u_dob'           => $this->input->post('u_dob'),
       'u_desg_id'       => $this->input->post('u_desg_id'),
       'u_dept_id'       => $this->input->post('u_dept_id'),
       'u_name'          => $this->input->post('u_name'),
@@ -115,11 +116,11 @@ class Faculty extends CI_Controller
 
     $data['input'] = (object)$postDataInp = array(
       'u_id'            =>  $input->u_id,
+      'u_dob'           =>  $input->u_dob,
       'u_user_role'     =>  $input->u_user_role,
       'u_desg_id'       =>  $input->u_desg_id,
       'u_dept_id'       =>  $input->u_dept_id,
       'u_name'          =>  $input->u_name,
-      // 'u_username'       $input->u_id => ,
       'u_email'         =>  $input->u_email,
       'u_password'      =>  $input->u_password,
       'u_mobile'        =>  $input->u_mobile,

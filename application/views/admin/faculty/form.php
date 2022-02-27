@@ -35,7 +35,7 @@
               <div class="row">
 
                 <!-- u_name -->
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
                     <label for="u_name"><?php echo ('Name'); ?></label> <small class="req"> *</small>
                     <input name="u_name" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Name') ?>" id="u_name" value="<?php echo $input->u_name; ?>" data-toggle="tooltip" title="<?php echo ('Faculty Name'); ?>">
@@ -43,8 +43,17 @@
                   </div>
                 </div>
 
+                <!-- u_dob -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="u_dob"><?php echo ('Date Of Brith'); ?></label> <small class="req"> *</small>
+                    <input name="u_dob" class="form-control form-control-sm" type="date" minn="<?php echo date('Y-m-d', strtotime("0 Days")); ?>" placeholder="<?php echo ('DOB') ?>" id="u_dob" value="<?php echo $input->u_dob; ?>" data-toggle="tooltip" title="<?php echo ('Date Of Birth'); ?>">
+                    <?php echo form_error('u_dob', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
+                </div>
+
                 <!-- u_desg_id -->
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
                     <label for="u_desg_id"><?php echo ('Designation'); ?></label> <i class="req text-danger"> *</i>
                     <?php echo form_dropdown('u_desg_id', $designation_list, $input->u_desg_id, 'class="form-control form-control-sm" id="u_desg_id" requiredd'); ?>
@@ -53,7 +62,7 @@
                 </div>
 
                 <!-- u_dept_id -->
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <div class="form-group">
                     <label for="u_dept_id"><?php echo ('Department'); ?></label> <i class="req text-danger"> *</i>
                     <?php echo form_dropdown('u_dept_id', $department_list, $input->u_dept_id, 'class="form-control form-control-sm" id="u_dept_id" requiredd'); ?>
@@ -156,6 +165,7 @@
               <tr>
                 <th><?php echo ('Unique Id') ?></th>
                 <th><?php echo ('Name') ?></th>
+                <th><?php echo ('Dob') ?></th>
                 <th><?php echo ('Designation') ?></th>
                 <th><?php echo ('Department') ?></th>
                 <th><?php echo ('Mobile No') ?></th>
@@ -171,6 +181,7 @@
                   <tr>
                     <td><?php echo $sl; ?></td>
                     <td><?php echo $user->u_name ?></td>
+                    <td><?php echo $user->u_dob ? date('Y-m-d', strtotime($user->u_dob)) : "" ?></td>
                     <td><?php echo $designation_list[$user->u_desg_id] ?></td>
                     <td><?php echo $department_list[$user->u_dept_id] ?></td>
                     <td><?php echo $user->u_mobile ?></td>
@@ -203,67 +214,20 @@
 
 <!-- jQuery -->
 <script src="<?php echo base_url('vendor/almasaeed2010/adminlte/') ?>plugins/jquery/jquery.min.js"></script>
-<!-- <script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script> -->
-
-<!-- jquery-validation -->
-<!-- <script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/jquery-validation/jquery.validate.min.js"></script>
-
-<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/jquery-validation/additional-methods.min.js"></script> -->
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $(function() {
-      // $('#save_type_form').validate({
-      //   rules: {
-      //     u_name: {
-      //       required: true,
-      //     },
-      //     u_status: {
-      //       required: true,
-      //     }
-      //   },
-      //   messages: {
-      //     u_name: {
-      //       required: "Please provide a Property Label Name"
-      //     },
-      //     u_status: {
-      //       required: "Please select status"
-      //     }
-      //   },
-      //   errorElement: 'span',
-      //   errorPlacement: function(error, element) {
-      //     error.addClass('badge badge-danger invalid-feedback');
-      //     element.siblings('span.invalid-feedback').remove();
-      //     element.closest('.form-group').append(error);
-      //   },
-      //   highlight: function(element, errorClass, validClass) {
-      //     $(element).addClass('is-invalid');
-      //   },
-      //   unhighlight: function(element, errorClass, validClass) {
-      //     $(element).removeClass('is-invalid');
-      //   }
-      // });
-    });
-    //$('[data-toggle="tooltip"]').tooltip();
-    //bsCustomFileInput.init();
 
-    // $('.datatable2').DataTable({
-    //   responsive: true,
-    //   dom: "<'row'<'col-sm-6 btn-sm'B><'col-sm-6 p-1'f>>tp",
-    //   "lengthChange": false,
-    //   "autoWidth": false,
-    //   // "lengthMenu": [
-    //   //   [10, 25, 50, -1],
-    //   //   [10, 25, 50, "All"]
-    //   // ],
-    //   buttons: [{
-    //     extend: 'colvis',
-    //     className: 'btn-sm'
-    //   }]
-    // });
-    // $(".dataTables_wrapper > div > div")[0].remove();
-    // $(".dataTables_wrapper > div > div").each(function() {
-    //   $(this).addClass('col-sm-6');
-    // });
+    // Set the date on update 
+    var dob = "<?php echo $input->u_dob; ?>";
+
+    // console.log(from_date == "");
+    if (dob === "") {
+      // $('#u_dob').prop('value', '<?php echo date('Y-m-d'); ?>');
+    } else {
+      $('#u_dob').prop('value', '<?php echo date('Y-m-d', strtotime($input->u_dob . ' 0 day')); ?>');
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+
   });
 </script>

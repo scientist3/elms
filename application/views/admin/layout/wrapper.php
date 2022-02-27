@@ -46,8 +46,7 @@
         <div class="alert alert-danger alert-dismissable  m-2">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="icon fas fa-ban"></i>Alert</h5>
-            <?php echo validation_errors();
-            ?> Please provide the correct details.
+            <?php echo validation_errors(); ?>
         </div>
     <?php } ?>
 
