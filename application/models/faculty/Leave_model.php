@@ -19,7 +19,7 @@ class Leave_model extends CI_Model
       ->result();
   }
 
-  public function read_with_join($condition = [], $returnAsArray = false)
+  public function read_with_join($returnAsArray = false)
   {
     $this->db->select(
       "leaves_tbl.l_id,
@@ -48,9 +48,6 @@ class Leave_model extends CI_Model
     $this->db->join('leave_type_tbl',   'leave_type_tbl.lt_id     = leaves_tbl.l_leave_type_id',  'left');
     $this->db->join('leave_status_tbl', 'leave_status_tbl.ls_id   = leaves_tbl.l_status',       'left');
 
-    if (valArr($condition)) {
-      $this->db->where($condition);
-    }
     $this->db->order_by('leaves_tbl.l_applied_date', 'DESC');
 
     // $this->db->limit($limit, $start);

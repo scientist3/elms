@@ -13,6 +13,8 @@ class Login extends CI_Controller
 			'user_model',
 			'setting_model',
 		));
+
+		$this->load->helper('cookie');
 	}
 
 	public function index()
@@ -56,6 +58,12 @@ class Login extends CI_Controller
 					'favicon'          => (!empty($setting->favicon) ? $setting->favicon : null),
 					'footer_text'     => (!empty($setting->footer_text) ? $setting->footer_text : null),
 				]);
+				$cookie = array(
+					'name'   => 'user_role',
+					'value'  => $check_user->row()->u_user_role,
+					'expire' => '31556952',
+				);
+				$this->input->set_cookie($cookie);
 				$this->redirectTo($data['user']['u_role']);
 
 				redirect('login');

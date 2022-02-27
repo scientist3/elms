@@ -21,8 +21,8 @@ class Home  extends CI_Controller
 	public function index()
 	{
 		$data['title'] = 'Faculty Home';
-		$data['user'] = array();
-		$data['user'] = array();
+		// $data['user'] = array();
+		// $data['user'] = array();
 		$data['user_role_list'] = $this->common_model->get_user_roles();
 		// $data['contents'] = $this->load->view("home/Home_view",$data,true);
 		$this->load->view("faculty/layout/wrapper", $data);
@@ -32,7 +32,7 @@ class Home  extends CI_Controller
 	{
 		if ($this->session->userdata('isLogIn') == false)
 			redirect('login');
-		$data['title'] = ('profile');
+		$data['title'] = ('Profile');
 		#------------------------------# 
 		$user_id = $this->session->userdata('user_id');
 		$data['user']    = $this->user_model->profile($user_id);
@@ -68,7 +68,7 @@ class Home  extends CI_Controller
 		$data['title'] = ('edit_profile');
 		$user_id = $this->session->userdata('user_id');
 		#-------------------------------#
-		$this->form_validation->set_rules('u_name', ('first_name'), 'required|max_length[50]');
+		// $this->form_validation->set_rules('u_name', ('first_name'), 'required|max_length[50]');
 		$this->form_validation->set_rules('u_email', ('email'), "required|max_length[50]|valid_email|callback_email_check[$user_id]");
 		//$this->form_validation->set_rules('password', ('password'), 'required|max_length[32]|md5');
 		$this->form_validation->set_rules('u_mobile', ('mobile'), 'required|max_length[20]');
@@ -93,10 +93,10 @@ class Home  extends CI_Controller
 			$this->session->set_flashdata('exception', ('invalid_picture'));
 		}
 		#-------------------------------# 
-		print_r($_POST);
+		// print_r($_POST);
 		$data['user'] = (object)$postData = [
 			'u_id'      => $this->input->post('u_id', true),
-			'u_name'    => $this->input->post('u_name', true),
+			// 'u_name'    => $this->input->post('u_name', true),
 			// 'lastname'     => $this->input->post('lastname', true),
 			//'designation'  => $this->input->post('designation',true),
 			//'department_id' => $this->input->post('department_id',true),
@@ -116,6 +116,8 @@ class Home  extends CI_Controller
 			'u_dou'  => date('Y-m-d H:m:s'),
 			//'status'       => $this->input->post('status',true),
 		];
+		// print_r($_SESSION);
+		// die();
 		#-------------------------------#
 		if ($this->form_validation->run() === true) {
 
@@ -131,8 +133,8 @@ class Home  extends CI_Controller
 			if ($postData['user_id'] == $this->session->userdata('user_id')) {
 				$this->session->set_userdata([
 					// Fixme: Refector
-					'picture'   => !empty($postData['picture']) ? $postData['picture'] : 'uploads/noimageold.png',
-					'fullname'  => $postData['firstname'] . ' ' . $postData['lastname']
+					'picture'   => !empty($postData['u_picture']) ? $postData['u_picture'] : 'uploads/noimageold.png',
+					'fullname'  => $postData['firstname']
 				]);
 			}
 			redirect('faculty/home/profile/');

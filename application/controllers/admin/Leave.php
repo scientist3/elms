@@ -32,7 +32,7 @@ class Leave extends CI_Controller
 
     $data['leave_types_list'] = $this->lt_model->read_as_list();
     $data['leave_status_list'] = $this->ls_model->read_as_list();
-    $data['leaves'] = $this->leave_model->read_with_join();
+    $data['leaves'] = $this->leave_model->read_with_join(array('l_status' => 1));
     // print_r($data);
     $data['contents'] = $this->load->view('admin/leave/form', $data, true);
     $this->load->view('admin/layout/wrapper', $data);

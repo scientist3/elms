@@ -15,9 +15,15 @@
           <p class="text-muted text-center"><?php echo ucfirst($user->ur_name) ?></p>
 
           <ul class="list-group list-group-unbordered mb-3">
+
             <li class="list-group-item  text-xs">
-              <b>Email</b> <a class="float-right"><?php echo $user->u_email ?></a>
+              <b>Designation</b> <a class="float-right"><?php echo $user->desg_name ?></a>
             </li>
+
+            <li class="list-group-item  text-xs">
+              <b>Department</b> <a class="float-right"><?php echo $user->dept_name ?></a>
+            </li>
+
             <li class="list-group-item  text-xs">
               <b>Mobile No.</b> <a class="float-right"><?php echo $user->u_mobile ?></a>
             </li>
@@ -53,23 +59,45 @@
               <?php echo form_open_multipart('faculty/home/form/', 'class="form-horizontal"') ?>
 
               <?php echo form_hidden('u_id', $user->u_id) ?>
+              <?php /*
               <div class="form-group row">
-                <label for="u_name" class="col-sm-2 col-form-label"><?php echo ('first_name') ?></label>
+                <label for="u_name" class="col-sm-2 col-form-label"><?php echo ('Name') ?></label>
                 <div class="col-sm-10">
-                  <input name="u_name" type="text" class="form-control" id="u_name" placeholder="First Name" value="<?php echo $user->u_name ?>">
+                  <input name="u_name" type="text" class="form-control" id="u_name" placeholder="Name" value="<?php echo $user->u_name ?>" disabled>
                 </div>
               </div>
 
+              <div class="form-group row">
+                <label for="u_dob" class="col-sm-2 col-form-label"><?php echo ('DOB') ?></label>
+                <div class="col-sm-10">
+                  <input name="u_dob" type="text" class="form-control" id="u_dob" placeholder="DOB" value="<?php echo $user->u_dob ?>" disabled>
+                </div>
+              </div>
 
               <div class="form-group row">
-                <label for="u_email" class="col-sm-2 col-form-label"><?php echo ('email') ?></label>
+                <label for="u_desg_id" class="col-sm-2 col-form-label"><?php echo ('Designation') ?></label>
+                <div class="col-sm-10">
+                  <input name="u_desg_id" type="text" class="form-control" id="u_desg_id" placeholder="Designation" value="<?php echo $user->u_desg_id ?>" disabled>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="u_dept_id" class="col-sm-2 col-form-label"><?php echo ('Designation') ?></label>
+                <div class="col-sm-10">
+                  <input name="u_dept_id" type="text" class="form-control" id="u_dept_id" placeholder="Designation" value="<?php echo $user->u_dept_id ?>" disabled>
+                </div>
+              </div>
+              */ ?>
+
+              <div class="form-group row">
+                <label for="u_email" class="col-sm-2 col-form-label"><?php echo ('Email') ?></label>
                 <div class="col-sm-10">
                   <input name="u_email" type="email" class="form-control" id="u_email" placeholder="<?php echo ('email') ?>" value="<?php echo $user->u_email ?>">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="u_password" class="col-sm-2 col-form-label"><?php echo ('password') ?></label>
+                <label for="u_password" class="col-sm-2 col-form-label"><?php echo ('Password') ?></label>
                 <div class="col-sm-10">
                   <input name="u_password" type="text" class="form-control" id="u_password" placeholder="<?php echo ('password') ?>" value="">
                   <input type="hidden" name="old_password" value="<?php echo $user->u_password ?>">
@@ -77,14 +105,14 @@
               </div>
 
               <div class="form-group row">
-                <label for="u_mobile" class="col-sm-2 col-form-label"><?php echo ('mobile') ?></label>
+                <label for="u_mobile" class="col-sm-2 col-form-label"><?php echo ('Mobile') ?></label>
                 <div class="col-sm-10">
                   <input name="u_mobile" type="text" class="form-control" id="u_mobile" placeholder="<?php echo ('mobile') ?>" value="<?php echo $user->u_mobile ?>">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="u_adress" class="col-sm-2 col-form-label"><?php echo ('address') ?></label>
+                <label for="u_adress" class="col-sm-2 col-form-label"><?php echo ('Address') ?></label>
                 <div class="col-sm-10">
                   <input name="u_adress" type="text" class="form-control" id="u_adress" placeholder="<?php echo ('address') ?>" value="<?php echo $user->u_adress ?>">
                 </div>
@@ -101,7 +129,7 @@
 
               <div class="form-group row">
                 <!-- Picture -->
-                <label for="picture" class="col-sm-2 control-label"><?php echo ('picture') ?></label>
+                <label for="picture" class="col-sm-2 control-label"><?php echo ('Picture') ?></label>
 
                 <div class="col-sm-10">
                   <div class="custom-file">

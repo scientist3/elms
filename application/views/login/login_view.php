@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <?php echo form_dropdown('user_role', $user_role_list, 1/*$user->user_role*/, 'class="form-control" id="user_role" '); ?>
+                        <?php echo form_dropdown('user_role', $user_role_list, $this->input->cookie('user_role') ?? 2, 'class="form-control" id="user_role" '); ?>
                     </div>
                     <div class="row">
                         <div class="col-12">
