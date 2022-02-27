@@ -189,7 +189,7 @@ class Leave extends CI_Controller
       'l_user_id'               => $this->session->userdata('user_id'),
       'l_applied_date'          => date('Y-m-d H:m:s'),
       'l_from_date'             => date('Y-M-d', strtotime($input->l_from_date)),
-      'l_to_date'               => date('y-M-d', strtotime($input->l_to_date)),
+      'l_to_date'               => date('Y-M-d', strtotime($input->l_to_date)),
       'l_is_half_day'           => $input->l_is_half_day,
       'l_first_or_second_half'  => $input->l_first_or_second_half,
       'l_reason'                => $input->l_reason,

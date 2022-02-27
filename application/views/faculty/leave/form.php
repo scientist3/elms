@@ -32,8 +32,8 @@
                 <!-- l_leave_type_id -->
                 <div class="col-sm-4">
                   <div class="form-group">
-                    <label for="l_leave_type_id"><?php echo ('Designation'); ?></label> <i class="req text-danger"> *</i>
-                    <?php echo form_dropdown('l_leave_type_id', $leave_types_list, $input->l_leave_type_id, 'class="form-control form-control-sm" id="l_leave_type_id" requiredd'); ?>
+                    <label for="l_leave_type_id"><?php echo ('Time Off Type'); ?></label> <i class="req text-danger"> *</i>
+                    <?php echo form_dropdown('l_leave_type_id', $leave_types_list, $input->l_leave_type_id, 'class="form-control form-control-sm" id="l_leave_type_id" requiredd data-toggle="tooltip" title="Leave Type"'); ?>
                     <?php echo form_error('l_leave_type_id', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="l_from_date"><?php echo ('From Date'); ?></label> <small class="req"> *</small>
-                    <input name="l_from_date" class="form-control form-control-sm" type="date" placeholder="<?php echo ('From Date') ?>" id="l_from_date" value="<?php echo $input->l_from_date; ?>" data-toggle="tooltip" title="<?php echo ('From Date'); ?>">
+                    <input name="l_from_date" class="form-control form-control-sm" type="date" min="<?php echo date('Y-m-d', strtotime("0 Days")); ?>" placeholder="<?php echo ('From Date') ?>" id="l_from_date" value="<?php echo $input->l_from_date; ?>" data-toggle="tooltip" title="<?php echo ('From Date'); ?>">
                     <?php echo form_error('l_from_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="l_to_date"><?php echo ('To Date'); ?></label> <small class="req"> *</small>
-                    <input name="l_to_date" class="form-control form-control-sm" type="date" placeholder="<?php echo ('To Date') ?>" id="l_to_date" value="<?php echo $input->l_to_date; ?>" data-toggle="tooltip" title="<?php echo ('To Date'); ?>">
+                    <input name="l_to_date" class="form-control form-control-sm" type="date" min="<?php echo date('Y-m-d', strtotime("0 Days")); ?>" placeholder="<?php echo ('To Date') ?>" id="l_to_date" value="<?php echo $input->l_to_date; ?>" data-toggle="tooltip" title="<?php echo ('To Date'); ?>">
                     <?php echo form_error('l_to_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="l_reason">Reason</label>
-                    <textarea name="l_reason" id="l_reason" class="form-control" rows="3" placeholder=""><?= $input->l_reason; ?></textarea>
+                    <textarea name="l_reason" id="l_reason" class="form-control" rows="3" placeholder="" data-toggle="tooltip" title="Please put forward you reason!"><?= $input->l_reason; ?></textarea>
                     <?php echo form_error('l_reason', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>
@@ -202,67 +202,42 @@
           $('#l_to_date').prop('disabled', 'disabled');
           $('#l_first_or_second_half').prop('disabled', false);
           // $('#l_first_or_second_half').show(1000);
-
         } else {
 
           $('#l_to_date').prop('disabled', false);
           $('#l_first_or_second_half').prop('disabled', 'disabled');
           // $('#l_first_or_second_half').hide(1000);
-
         }
       });
+
+      // Is Half Day
       $('#l_is_half_day').trigger('change');
-      // $('#save_type_form').validate({
-      //   rules: {
-      //     dept_name: {
-      //       required: true,
-      //     },
-      //     dept_status: {
-      //       required: true,
-      //     }
-      //   },
-      //   messages: {
-      //     dept_name: {
-      //       required: "Please provide a Property Label Name"
-      //     },
-      //     dept_status: {
-      //       required: "Please select status"
-      //     }
-      //   },
-      //   errorElement: 'span',
-      //   errorPlacement: function(error, element) {
-      //     error.addClass('badge badge-danger invalid-feedback');
-      //     element.siblings('span.invalid-feedback').remove();
-      //     element.closest('.form-group').append(error);
-      //   },
-      //   highlight: function(element, errorClass, validClass) {
-      //     $(element).addClass('is-invalid');
-      //   },
-      //   unhighlight: function(element, errorClass, validClass) {
-      //     $(element).removeClass('is-invalid');
-      //   }
-      // });
+
+      // Set the date on update 
+      var from_date = "<?php echo $input->l_from_date; ?>";
+      var to_date = "<?php echo $input->l_to_date; ?>";
+
+      // console.log(from_date == "");
+      if (from_date === "") {
+        $('#l_from_date').prop('value', '<?php echo date('Y-m-d'); ?>');
+        $('#l_to_date').prop('value', '<?php echo date('Y-m-d'); ?>');
+      } else {
+        $('#l_from_date').prop('value', '<?php echo date('Y-m-d', strtotime($input->l_from_date)); ?>');
+        $('#l_to_date').prop('value', '<?php echo date('Y-m-d', strtotime($input->l_to_date . ' +1 day')); ?>');
+      }
+
+      // Disabled the past date 
+      $('#l_from_date').off('change').on('change', function() {
+        console.log('From Date Changed');
+        $('#l_to_date').attr('min', $(this).val());
+        $('#l_to_date').prop('value', $(this).val());
+      });
+
+      // Initialize the tooltip
+      $('[data-toggle="tooltip"]').tooltip();
+
     });
-    //$('[data-toggle="tooltip"]').tooltip();
     //bsCustomFileInput.init();
 
-    // $('.datatable2').DataTable({
-    //   responsive: true,
-    //   dom: "<'row'<'col-sm-6 btn-sm'B><'col-sm-6 p-1'f>>tp",
-    //   "lengthChange": false,
-    //   "autoWidth": false,
-    //   // "lengthMenu": [
-    //   //   [10, 25, 50, -1],
-    //   //   [10, 25, 50, "All"]
-    //   // ],
-    //   buttons: [{
-    //     extend: 'colvis',
-    //     className: 'btn-sm'
-    //   }]
-    // });
-    // $(".dataTables_wrapper > div > div")[0].remove();
-    // $(".dataTables_wrapper > div > div").each(function() {
-    //   $(this).addClass('col-sm-6');
-    // });
   });
 </script>
