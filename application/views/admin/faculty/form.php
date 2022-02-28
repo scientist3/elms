@@ -94,7 +94,8 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label for="u_password"><?php echo ('Password'); ?></label> <small class="req"> *</small>
-                    <input name="u_password" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Password') ?>" id="u_password" value="<?php echo $input->u_password ?? 'faculty@123'; ?>" data-toggle="tooltip" title="<?php echo ('Password'); ?>">
+                    <input name="u_password" class="form-control form-control-sm" type="text" placeholder="<?php echo ('Password') ?>" id="u_password" vvalue="<?php echo $input->u_password ?? 'faculty@123'; ?>" data-toggle="tooltip" title="<?php echo ('Password'); ?>">
+                    <?php echo form_hidden('old_u_password', $input->u_password) ?>
                     <?php echo form_error('u_password', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>

@@ -36,12 +36,16 @@ class Faculty extends CI_Controller
       $this->form_validation->set_rules('u_desg_id', ('Designation'),  'required');
       $this->form_validation->set_rules('u_dept_id', ('Department'),   'required');
       $this->form_validation->set_rules('u_email', ('Email'),        'required');
-      $this->form_validation->set_rules('u_password', ('Password'),        'required');
+      // $this->form_validation->set_rules('u_password', ('Password'),        'required');
       $this->form_validation->set_rules('u_status', ('Status'),        'required');
     }
 
 
     // <!-- u_id u_user_role u_desg_id u_u_id u_name u_username u_email u_password u_mobile u_adress u_picture u_user_approval u_doc u_dou u_status -->
+    $password = $this->input->post('u_password');
+    $old_password = $this->input->post('old_u_password');
+
+    // javeed@gmail.com
     $data['input'] = (object)$postDataInp = array(
       'u_id'            => $this->input->post('u_id'),
       'u_user_role'     => 2,
@@ -50,7 +54,7 @@ class Faculty extends CI_Controller
       'u_dept_id'       => $this->input->post('u_dept_id'),
       'u_name'          => $this->input->post('u_name'),
       'u_email'         => $this->input->post('u_email'),
-      'u_password'      => $this->input->post('u_password'),
+      'u_password'      => !empty($password) ? md5($password) : ((!empty($old_password)) ? $old_password : md5('faculty@123')),
       'u_mobile'        => $this->input->post('u_mobile'),
       'u_dou'           => date('Y-m-d H:m:s'),
       'u_status'        => $this->input->post('u_status'),
