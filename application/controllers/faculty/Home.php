@@ -24,9 +24,7 @@ class Home  extends CI_Controller
 	{
 		$data['title'] = 'Faculty Home';
 
-		$data['total_pending_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 1);
-		$data['total_approved_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 2);
-		$data['total_rejected_leaves'] = $this->leave_model->read_total_leaves_by_status($this->user_id, 3);
+		$data['leave_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 
 		$data['user_role_list'] = $this->common_model->get_user_roles();
 		$data['contents'] = $this->load->view("faculty/home/home_view", $data, true);

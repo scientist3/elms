@@ -7,7 +7,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3><?= $total_pending_leaves ?? 0; ?></h3>
+            <h3><?= $leave_status[0]->total_days ?? 0; ?></h3>
 
             <p>Pending Leaves</p>
           </div>
@@ -22,7 +22,7 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3><?= $total_approved_leaves ?? 0; ?><sup style="font-size: 20px"></sup></h3>
+            <h3><?= $leave_status[1]->total_days ?? 0; ?><sup style="font-size: 20px"></sup></h3>
 
             <p>Approved Leaves</p>
           </div>
@@ -37,7 +37,7 @@
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3><?= $total_rejected_leaves ?? 0; ?></h3>
+            <h3><?= $leave_status[2]->total_days ?? 0; ?></h3>
 
             <p>Rejected Leaves</p>
           </div>
@@ -52,7 +52,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3><?= $total_pending_leaves + $total_approved_leaves + $total_rejected_leaves; ?></h3>
+            <h3><?= $leave_status[0]->total_days + $leave_status[1]->total_days + $leave_status[2]->total_days; ?></h3>
 
             <p>Total Leaves</p>
           </div>
