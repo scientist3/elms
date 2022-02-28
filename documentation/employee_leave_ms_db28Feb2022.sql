@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2022 at 05:53 AM
+-- Generation Time: Feb 28, 2022 at 05:21 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.3.25
 
@@ -63,8 +63,14 @@ CREATE TABLE `designation_tbl` (
 --
 
 INSERT INTO `designation_tbl` (`desg_id`, `desg_name`, `desg_doc`, `desg_dou`, `desg_status`) VALUES
-(1, 'Professor', '2022-02-24 16:04:16', NULL, 1),
-(2, 'Assistant Professor', '2022-02-24 16:04:16', NULL, 1);
+(1, 'Assistant Professor', '2022-02-24 16:04:16', NULL, 1),
+(2, 'Associatate Professor', '2022-02-24 16:04:16', NULL, 1),
+(3, 'Lab Bearer', '2022-02-25 17:05:17', NULL, 0),
+(4, 'Lab Assistant', '2022-02-25 17:08:20', NULL, 1),
+(5, 'Contractual Lecturer', '2022-02-25 17:16:47', NULL, 1),
+(6, 'Local Fund ', '2022-02-25 17:16:47', NULL, 1),
+(7, 'Librarian', '2022-02-25 17:16:47', NULL, 1),
+(8, 'PTI', '2022-02-25 17:16:47', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -102,10 +108,10 @@ CREATE TABLE `leaves_tbl` (
   `l_leave_type_id` int(11) NOT NULL,
   `l_user_id` int(11) NOT NULL,
   `l_applied_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `l_to_date` datetime NOT NULL,
-  `l_from_date` datetime NOT NULL,
-  `l_is_half_day` tinyint(1) DEFAULT 0,
-  `l_first_or_second_half` enum('firsthalf','secondhalf','','') DEFAULT NULL,
+  `l_from_date` date NOT NULL,
+  `l_to_date` date NOT NULL,
+  `l_is_half_day` enum('full_day','half_day','','') DEFAULT NULL,
+  `l_first_or_second_half` enum('first_half','second_half','','') DEFAULT NULL,
   `l_reason` text DEFAULT NULL,
   `l_document` varchar(200) DEFAULT NULL,
   `l_status` int(11) NOT NULL,
@@ -116,8 +122,13 @@ CREATE TABLE `leaves_tbl` (
 -- Dumping data for table `leaves_tbl`
 --
 
-INSERT INTO `leaves_tbl` (`l_id`, `l_leave_type_id`, `l_user_id`, `l_applied_date`, `l_to_date`, `l_from_date`, `l_is_half_day`, `l_first_or_second_half`, `l_reason`, `l_document`, `l_status`, `l_comments`) VALUES
-(1, 1, 2, '2022-02-24 16:23:37', '2022-02-27 21:53:06', '2022-02-27 21:53:06', 0, NULL, 'Have Some work', NULL, 1, NULL);
+INSERT INTO `leaves_tbl` (`l_id`, `l_leave_type_id`, `l_user_id`, `l_applied_date`, `l_from_date`, `l_to_date`, `l_is_half_day`, `l_first_or_second_half`, `l_reason`, `l_document`, `l_status`, `l_comments`) VALUES
+(6, 1, 3, '2022-02-27 14:32:42', '2022-02-27', '2022-02-27', 'full_day', NULL, '', NULL, 2, NULL),
+(7, 2, 3, '2022-02-27 14:32:01', '2022-03-03', '2022-03-07', 'full_day', NULL, '', NULL, 2, NULL),
+(8, 2, 3, '2022-02-27 14:32:01', '2022-03-03', '2022-03-07', 'full_day', NULL, '', NULL, 3, NULL),
+(9, 2, 3, '2022-02-27 14:32:01', '2022-03-03', '2022-03-04', 'full_day', NULL, '', NULL, 1, NULL),
+(10, 3, 3, '2022-02-27 14:32:23', '2022-02-27', '2022-02-28', 'full_day', NULL, '', NULL, 1, NULL),
+(11, 3, 2, '2022-02-27 14:32:23', '2022-02-27', '2022-02-28', 'full_day', NULL, '', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -145,13 +156,49 @@ INSERT INTO `leave_status_tbl` (`ls_id`, `ls_name`, `ls_doc`, `ls_dou`, `ls_stat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `leave_type_designation_mapping_tbl`
+--
+
+CREATE TABLE `leave_type_designation_mapping_tbl` (
+  `ltdm_id` int(11) NOT NULL,
+  `ltdm_lt_id` int(11) NOT NULL,
+  `ltdm_desg_id` int(11) NOT NULL,
+  `ltdm_allowed_days` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Allowed Time off based on leave type and designation ';
+
+--
+-- Dumping data for table `leave_type_designation_mapping_tbl`
+--
+
+INSERT INTO `leave_type_designation_mapping_tbl` (`ltdm_id`, `ltdm_lt_id`, `ltdm_desg_id`, `ltdm_allowed_days`) VALUES
+(1, 1, 1, 14),
+(2, 1, 2, 14),
+(3, 1, 3, 14),
+(4, 1, 4, 14),
+(5, 1, 5, 14),
+(6, 1, 6, 14),
+(7, 1, 7, 14),
+(8, 1, 8, 14),
+(9, 2, 1, 10),
+(10, 2, 2, 10),
+(11, 2, 3, 10),
+(12, 2, 4, 10),
+(13, 2, 5, 0),
+(14, 2, 6, 0),
+(15, 2, 7, 10),
+(16, 2, 8, 10),
+(17, 3, 1, 0),
+(18, 3, 2, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `leave_type_tbl`
 --
 
 CREATE TABLE `leave_type_tbl` (
   `lt_id` int(11) NOT NULL,
   `lt_name` varchar(100) NOT NULL,
-  `lt_days_allowed` int(11) NOT NULL,
   `lt_doc` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `lt_dou` datetime DEFAULT NULL,
   `lt_status` tinyint(1) NOT NULL DEFAULT 1
@@ -161,8 +208,14 @@ CREATE TABLE `leave_type_tbl` (
 -- Dumping data for table `leave_type_tbl`
 --
 
-INSERT INTO `leave_type_tbl` (`lt_id`, `lt_name`, `lt_days_allowed`, `lt_doc`, `lt_dou`, `lt_status`) VALUES
-(1, 'Casual Leave', 15, '2022-02-24 16:19:02', NULL, 1);
+INSERT INTO `leave_type_tbl` (`lt_id`, `lt_name`, `lt_doc`, `lt_dou`, `lt_status`) VALUES
+(1, 'Casual Leave', '2022-02-24 16:19:02', NULL, 1),
+(2, 'Medical Leave', '2022-02-25 17:15:20', NULL, 1),
+(3, 'Maternity Leave', '2022-02-25 17:15:20', NULL, 1),
+(4, 'Earned Leave', '2022-02-25 17:15:20', NULL, 1),
+(5, 'Study Leave', '2022-02-25 17:15:20', NULL, 1),
+(6, 'Half Pay Leave', '2022-02-25 17:15:20', NULL, 1),
+(7, 'Child Care Leave', '2022-02-25 17:15:20', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -188,7 +241,7 @@ CREATE TABLE `setting` (
 --
 
 INSERT INTO `setting` (`setting_id`, `title`, `description`, `email`, `phone`, `logo`, `favicon`, `language`, `site_align`, `footer_text`) VALUES
-(1, 'Employee Leave MS', 'Gangoo, Pulwama 192301 KASHMIR', 'mnh@admin.com', '9596557705', 'siteassets/images/apps/2020-08-22/N.png', 'siteassets/images/icons/2020-08-16/r.png', 'english', 'LTR', '2020©Copyright Mohammadia Nursing Home.');
+(1, 'SP College', 'MA Road, Srinagar', 'info@spcollege.edu.in', '9906323232', 'uploads/site/logo/2022-02-25/S2.jpg', 'uploads/site/logo/2022-02-25/f.png', '0', NULL, '2022©Copyright SP College');
 
 -- --------------------------------------------------------
 
@@ -226,10 +279,11 @@ CREATE TABLE `user_tbl` (
   `u_username` varchar(11) NOT NULL,
   `u_email` varchar(50) NOT NULL,
   `u_password` varchar(500) NOT NULL,
-  `u_mobile` int(11) NOT NULL,
+  `u_mobile` varchar(15) DEFAULT NULL,
   `u_adress` varchar(11) NOT NULL,
-  `u_picture` varchar(11) NOT NULL,
+  `u_picture` varchar(200) NOT NULL,
   `u_user_approval` tinyint(4) NOT NULL,
+  `u_dob` date DEFAULT NULL,
   `u_doc` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `u_dou` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `u_status` int(11) NOT NULL
@@ -239,9 +293,12 @@ CREATE TABLE `user_tbl` (
 -- Dumping data for table `user_tbl`
 --
 
-INSERT INTO `user_tbl` (`u_id`, `u_user_role`, `u_desg_id`, `u_dept_id`, `u_name`, `u_username`, `u_email`, `u_password`, `u_mobile`, `u_adress`, `u_picture`, `u_user_approval`, `u_doc`, `u_dou`, `u_status`) VALUES
-(1, 1, NULL, NULL, 'Admin', 'admin', 'admin@elms.com', '21232f297a57a5a743894a0e4a801fc3', 0, '', '', 0, '2022-02-24 16:01:05', '2022-02-24 16:01:05', 1),
-(2, 2, 2, 1, 'Faculty', 'faculty', 'faculty@elms.com', 'd561c7c03c1f2831904823a95835ff5f', 0, '', '', 0, '2022-02-24 16:07:57', '2022-02-24 16:07:57', 1);
+INSERT INTO `user_tbl` (`u_id`, `u_user_role`, `u_desg_id`, `u_dept_id`, `u_name`, `u_username`, `u_email`, `u_password`, `u_mobile`, `u_adress`, `u_picture`, `u_user_approval`, `u_dob`, `u_doc`, `u_dou`, `u_status`) VALUES
+(1, 1, NULL, NULL, 'Admin', 'admin', 'admin@elms.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', 0, NULL, '2022-02-25 16:34:51', '2022-02-25 16:34:51', 1),
+(2, 2, 2, 1, 'Wasi', 'wasi', 'faculty@elms.com', 'd561c7c03c1f2831904823a95835ff5f', '9797101010', 'Address Upd', 'uploads/faculty/profilepic/2022-02-26/f3.png', 0, '1993-10-04', '2022-02-26 15:06:38', '2022-02-26 10:32:38', 1),
+(3, 2, 1, 1, 'Asif Wani', '', 'asif@gmail.com', 'a80043e63675e5ec2089b2355f5f819d', '', '', '', 0, '1996-05-06', '2022-02-27 18:33:20', '2022-02-27 18:33:20', 1),
+(5, 2, 1, 2, 'Aamir Bashir', '', 'eraamirsofi@gmail.com', 'faculty@123', '+917006939042', '', '', 0, '1991-11-01', '2022-02-27 17:53:50', '2022-02-27 12:32:50', 1),
+(6, 2, 2, 3, 'Anees', '', 'eraamirsofi@gmail.com', 'faculty@123', '+917006939042', '', '', 0, '1993-10-04', '2022-02-27 16:56:38', '2022-02-27 11:32:38', 1);
 
 --
 -- Indexes for dumped tables
@@ -282,6 +339,14 @@ ALTER TABLE `leave_status_tbl`
   ADD PRIMARY KEY (`ls_id`);
 
 --
+-- Indexes for table `leave_type_designation_mapping_tbl`
+--
+ALTER TABLE `leave_type_designation_mapping_tbl`
+  ADD PRIMARY KEY (`ltdm_id`),
+  ADD KEY `ltdm_lt_id` (`ltdm_lt_id`),
+  ADD KEY `ltdm_desg_id` (`ltdm_desg_id`);
+
+--
 -- Indexes for table `leave_type_tbl`
 --
 ALTER TABLE `leave_type_tbl`
@@ -316,13 +381,13 @@ ALTER TABLE `user_tbl`
 -- AUTO_INCREMENT for table `department_tbl`
 --
 ALTER TABLE `department_tbl`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `designation_tbl`
 --
 ALTER TABLE `designation_tbl`
-  MODIFY `desg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `desg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `institution_tbl`
@@ -334,7 +399,7 @@ ALTER TABLE `institution_tbl`
 -- AUTO_INCREMENT for table `leaves_tbl`
 --
 ALTER TABLE `leaves_tbl`
-  MODIFY `l_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `l_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `leave_status_tbl`
@@ -343,10 +408,16 @@ ALTER TABLE `leave_status_tbl`
   MODIFY `ls_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `leave_type_designation_mapping_tbl`
+--
+ALTER TABLE `leave_type_designation_mapping_tbl`
+  MODIFY `ltdm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `leave_type_tbl`
 --
 ALTER TABLE `leave_type_tbl`
-  MODIFY `lt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `lt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `setting`
@@ -364,7 +435,7 @@ ALTER TABLE `user_role_tbl`
 -- AUTO_INCREMENT for table `user_tbl`
 --
 ALTER TABLE `user_tbl`
-  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -383,6 +454,13 @@ ALTER TABLE `leaves_tbl`
   ADD CONSTRAINT `leaves_tbl_ibfk_1` FOREIGN KEY (`l_leave_type_id`) REFERENCES `leave_type_tbl` (`lt_id`),
   ADD CONSTRAINT `leaves_tbl_ibfk_2` FOREIGN KEY (`l_user_id`) REFERENCES `user_tbl` (`u_id`),
   ADD CONSTRAINT `leaves_tbl_ibfk_3` FOREIGN KEY (`l_status`) REFERENCES `leave_status_tbl` (`ls_id`);
+
+--
+-- Constraints for table `leave_type_designation_mapping_tbl`
+--
+ALTER TABLE `leave_type_designation_mapping_tbl`
+  ADD CONSTRAINT `leave_type_designation_mapping_tbl_ibfk_1` FOREIGN KEY (`ltdm_lt_id`) REFERENCES `leave_type_tbl` (`lt_id`),
+  ADD CONSTRAINT `leave_type_designation_mapping_tbl_ibfk_2` FOREIGN KEY (`ltdm_desg_id`) REFERENCES `designation_tbl` (`desg_id`);
 
 --
 -- Constraints for table `user_tbl`
