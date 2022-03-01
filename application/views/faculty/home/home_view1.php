@@ -52,7 +52,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3><?= valArr($leave_status) ? $leave_status[0]->total_days + $leave_status[1]->total_days + $leave_status[2]->total_days : 0; ?></h3>
+            <h3><?= valArr($leave_status) ? $leave_status[0]->total_days ?? 0 + $leave_status[1]->total_days ?? 0 + $leave_status[2]->total_days ?? 0 : 0; ?></h3>
 
             <p>Total Leaves</p>
           </div>
