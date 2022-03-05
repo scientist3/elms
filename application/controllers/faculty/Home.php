@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Home  extends CI_Controller
 {
+	private $is_edit_enabled = 0;
 
 	public function __construct()
 	{
@@ -13,15 +14,26 @@ class Home  extends CI_Controller
 		$this->load->model(array(
 			'common_model',
 			'user_model',
-			'faculty/leave_model'
+			'faculty/leave_model',
+			'faculty/designation_model' => 'desg_model',
+			'faculty/department_model' => 'dept_model',
+			'category_model' => 'c_model',
 		));
 
 		// print_r($_SESSION);
 		$this->user_id = $this->session->userdata('user_id');
+		// $this->is_edit_enabled = 0;
+		// $this->session->set_userdata('is_edit_enabled', 1);
+		$this->is_edit_enabled = $this->session->userdata('is_edit_enabled');
 	}
 
 	public function index()
 	{
+		// Force to update profile first
+		if ($this->is_edit_enabled == 1) {
+			$this->session->set_flashdata('exception', ('Please update your profile first'));
+			redirect('faculty/home/profile');     // Faculty
+		}
 		$data['title'] = 'Faculty Dashboard';
 		// $data['title'] = 'Faculty Dashboard - Report (' . date('Y') . ')';
 
@@ -35,13 +47,16 @@ class Home  extends CI_Controller
 	{
 		if ($this->session->userdata('isLogIn') == false)
 			redirect('login');
-		$data['title'] = ('Profile');
+		$data['title'] = ('Faculty Profile');
 		#------------------------------# 
 		$user_id = $this->session->userdata('user_id');
-		$data['user']    = $this->user_model->profile($user_id);
-		$data['user_role_list'] = $this->common_model->get_user_roles();
+		$data['user']    					= $this->user_model->profile($user_id);
+		$data['user_role_list'] 	= $this->common_model->get_user_roles();
+		$data['designation_list'] = $this->desg_model->read_as_list();
+		$data['department_list'] 	= $this->dept_model->read_as_list();
+		$data['category_list'] 		= $this->c_model->read_as_list();
 
-		// print_r($data['user']);
+		// show($data);
 		$data['contents'] = $this->load->view('faculty/profile', $data, true);
 		$this->load->view('faculty/layout/wrapper', $data);
 	}
@@ -70,12 +85,24 @@ class Home  extends CI_Controller
 
 		$data['title'] = ('edit_profile');
 		$user_id = $this->session->userdata('user_id');
-		#-------------------------------#
-		// $this->form_validation->set_rules('u_name', ('first_name'), 'required|max_length[50]');
-		$this->form_validation->set_rules('u_email', ('email'), "required|max_length[50]|valid_email|callback_email_check[$user_id]");
+		#------------- Validation For edit all ------------------#
+		if ($this->is_edit_enabled == 1) {
+			$this->form_validation->set_rules('u_name', ('Name'), 'required|max_length[50]');
+			$this->form_validation->set_rules('u_desg_id', ('Designation'),  'required');
+			$this->form_validation->set_rules('u_dept_id', ('Department'),   'required');
+			$this->form_validation->set_rules('u_category', ('Category'),   'required');
+			$this->form_validation->set_rules('u_qualification', ('Qualification'),   'required');
+			$this->form_validation->set_rules('u_d_o_appointment', ('Appointment Date'),   'required');
+			$this->form_validation->set_rules('u_first_place_of_posting', ('First Posting'),   'required');
+			$this->form_validation->set_rules('u_d_o_app_at_spc', ('Date of Posting at SP College'),   'required');
+			$this->form_validation->set_rules('u_d_o_last_promotion', ('Date of last promotion'),   'required');
+		}
+
+		#------------- Validation For Normal case ------------------#
+		$this->form_validation->set_rules('u_email', ('Email'), "required|max_length[50]|valid_email|callback_email_check[$user_id]");
 		//$this->form_validation->set_rules('password', ('password'), 'required|max_length[32]|md5');
-		$this->form_validation->set_rules('u_mobile', ('mobile'), 'required|max_length[20]');
-		$this->form_validation->set_rules('u_adress', ('address'), 'required');
+		$this->form_validation->set_rules('u_mobile', ('Mobile'), 'required|max_length[20]');
+		$this->form_validation->set_rules('u_adress', ('Address'), 'required');
 
 		#-------------------------------#
 		//picture upload
@@ -95,30 +122,38 @@ class Home  extends CI_Controller
 		if ($picture === false) {
 			$this->session->set_flashdata('exception', ('invalid_picture'));
 		}
-		#-------------------------------# 
-		// print_r($_POST);
-		$data['user'] = (object)$postData = [
-			'u_id'      => $this->input->post('u_id', true),
-			// 'u_name'    => $this->input->post('u_name', true),
-			// 'lastname'     => $this->input->post('lastname', true),
-			//'designation'  => $this->input->post('designation',true),
-			//'department_id' => $this->input->post('department_id',true),
-			//'address'      => $this->input->post('address',true),
-			//'phone'        => $this->input->post('phone',true),
-			'u_mobile'       => $this->input->post('u_mobile', true),
-			'u_email'        => $this->input->post('u_email', true),
-			'u_password'     => (!empty($this->input->post('u_password', true))) ? md5($this->input->post('u_password', true)) : $this->input->post('old_password', true),
-			//'short_biography' => $this->input->post('short_biography',true),
-			'u_picture'      => (!empty($picture) ? $picture : $this->input->post('old_picture')),
-			'u_adress'   => $this->input->post('u_adress', true),
-			//'date_of_birth' => date('Y-m-d', strtotime($this->input->post('date_of_birth',true))),
-			//'sex'          => $this->input->post('sex',true),
-			//'blood_group'  => $this->input->post('blood_group',true),
-			//'degree'       => $this->input->post('degree',true),
-			//'created_by'   => $this->session->userdata('user_id'),
-			'u_dou'  => date('Y-m-d H:m:s'),
-			//'status'       => $this->input->post('status',true),
-		];
+		#----------------Prepare data for full edit---------------# 
+		if ($this->is_edit_enabled == 1) {
+			$data['user'] = (object)$postData = [
+				'u_id'						=> $this->input->post('u_id', true),
+				'u_name'					=> $this->input->post('u_name', true),
+				'u_desg_id'				=> $this->input->post('u_desg_id', true),
+				'u_dept_id'				=> $this->input->post('u_dept_id', true),
+				'u_category'    	=> $this->input->post('u_category', true),
+				'u_qualification'	=> $this->input->post('u_qualification', true),
+				'u_mobile'       	=> $this->input->post('u_mobile', true),
+				'u_email'        	=> $this->input->post('u_email', true),
+				'u_password'     	=> (!empty($this->input->post('u_password', true))) ? md5($this->input->post('u_password', true)) : $this->input->post('old_password', true),
+				'u_picture'      	=> (!empty($picture) ? $picture : $this->input->post('old_picture')),
+				'u_adress'   			=> $this->input->post('u_adress', true),
+				'u_d_o_appointment'          => $this->input->post('u_d_o_appointment', true),
+				'u_first_place_of_posting'          => $this->input->post('u_first_place_of_posting', true),
+				'u_d_o_app_at_spc'          => $this->input->post('u_d_o_app_at_spc', true),
+				'u_d_o_last_promotion'          => $this->input->post('u_d_o_last_promotion', true),
+				'u_enable_edits'   => 0,
+				'u_dou'  					=> date('Y-m-d H:m:s'),
+			];
+		} else {
+			$data['user'] = (object)$postData = [
+				'u_id'						=> $this->input->post('u_id', true),
+				'u_mobile'				=> $this->input->post('u_mobile', true),
+				'u_email'					=> $this->input->post('u_email', true),
+				'u_password'			=> (!empty($this->input->post('u_password', true))) ? md5($this->input->post('u_password', true)) : $this->input->post('old_password', true),
+				'u_picture'				=> (!empty($picture) ? $picture : $this->input->post('old_picture')),
+				'u_adress'				=> $this->input->post('u_adress', true),
+				'u_dou'						=> date('Y-m-d H:m:s'),
+			];
+		}
 		// print_r($_SESSION);
 		// die();
 		#-------------------------------#
@@ -133,18 +168,23 @@ class Home  extends CI_Controller
 			}
 
 			//update profile picture
-			if ($postData['user_id'] == $this->session->userdata('user_id')) {
+			if ($postData['u_id'] == $this->session->userdata('user_id')) {
 				$this->session->set_userdata([
 					// Fixme: Refector
 					'picture'   => !empty($postData['u_picture']) ? $postData['u_picture'] : 'uploads/noimageold.png',
-					'fullname'  => $postData['firstname']
+					'is_edit_enabled'  => 0
 				]);
 			}
+			// show($_SESSION);
 			redirect('faculty/home/profile/');
 		} else {
 			$user_id = $this->session->userdata('user_id');
 			$data['user'] = $this->user_model->profile($user_id);
 			$data['user_role_list'] = $this->common_model->get_user_roles();
+			$data['designation_list'] = $this->desg_model->read_as_list();
+			$data['department_list'] = $this->dept_model->read_as_list();
+			$data['category_list'] 		= $this->c_model->read_as_list();
+
 			$data['contents'] = $this->load->view('faculty/profile', $data, true);
 			$this->load->view('faculty/layout/wrapper', $data);
 		}

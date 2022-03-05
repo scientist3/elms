@@ -45,24 +45,24 @@ class Login extends CI_Controller
 		$data['settings'] = $setting;
 		if ($this->form_validation->run() === true) {
 			$check_user = $this->login_model->check_user($data['user']);
-			//print_r($check_user->row());
 			if ($check_user->num_rows() === 1) {
 				$this->session->set_userdata([
-					'isLogIn'       => true,
-					'user_id'       => $check_user->row()->u_id,
-					'email'         => $check_user->row()->u_email,
-					'fullname'      => $check_user->row()->u_name,
-					'user_role'     => $check_user->row()->u_user_role,
-					'user_desg'     => $check_user->row()->u_desg_id,
-					'user_dept'     => $check_user->row()->u_dept_id,
-					'picture'       => !empty($check_user->row()->u_picture) ? $check_user->row()->u_picture : 'uploads/noimageold.png',
-					'create_date'     => $check_user->row()->u_doc,
+					'isLogIn'       		=> true,
+					'user_id'       		=> $check_user->row()->u_id,
+					'email'         		=> $check_user->row()->u_email,
+					'fullname'      		=> $check_user->row()->u_name,
+					'user_role'     		=> $check_user->row()->u_user_role,
+					'user_desg'     		=> $check_user->row()->u_desg_id,
+					'user_dept'     		=> $check_user->row()->u_dept_id,
+					'is_edit_enabled' 	=> $check_user->row()->u_enable_edits,
+					'picture'       		=> !empty($check_user->row()->u_picture) ? $check_user->row()->u_picture : 'uploads/noimageold.png',
+					'create_date'     	=> $check_user->row()->u_doc,
 					/* Saving Setting Into Session*/
-					'title'         => (!empty($setting->title) ? $setting->title : null),
-					'address'       => (!empty($setting->description) ? $setting->description : null),
-					'logo'          => (!empty($setting->logo) ? $setting->logo : null),
-					'favicon'          => (!empty($setting->favicon) ? $setting->favicon : null),
-					'footer_text'     => (!empty($setting->footer_text) ? $setting->footer_text : null),
+					'title'         		=> (!empty($setting->title) ? $setting->title : null),
+					'address'       		=> (!empty($setting->description) ? $setting->description : null),
+					'logo'          		=> (!empty($setting->logo) ? $setting->logo : null),
+					'favicon'          	=> (!empty($setting->favicon) ? $setting->favicon : null),
+					'footer_text'     	=> (!empty($setting->footer_text) ? $setting->footer_text : null),
 				]);
 				$cookie = array(
 					'name'   => 'user_role',

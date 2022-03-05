@@ -25,6 +25,11 @@ class Leave extends CI_Controller
 
   public function index()
   {
+    // Force to update profile first
+    if ($this->session->userdata('is_edit_enabled') == 1) {
+      $this->session->set_flashdata('exception', ('Please update your profile first'));
+      redirect('faculty/home/profile');     // Faculty
+    }
     $leave_id = $this->input->post('l_id');
     $full_or_half_day = $this->input->post('l_is_half_day');
     $first_or_second_half = $this->input->post('l_first_or_second_half');
