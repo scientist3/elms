@@ -45,6 +45,7 @@ class Leave extends CI_Controller
     {
       $this->form_validation->set_rules('l_leave_type_id', ('Time Of Type'),  'required');
       $this->form_validation->set_rules('l_from_date', ('From Date'),  'required');
+      $this->form_validation->set_rules('l_reason', ('Reason'),  'required');
       if ($full_or_half_day == 'full_day') {
         $this->form_validation->set_rules('l_to_date', ('To Date'),    'required');
       }
@@ -54,6 +55,40 @@ class Leave extends CI_Controller
       // $this->form_validation->set_rules('l_reason', ('Reason'),  'required');
       // $this->form_validation->set_rules('l_document', ('Document'),  'required');
     }
+
+    #---------- Upload Document --------------#
+    //picture upload
+    $upload_config = [
+      'allowed_types' => 'jpg|png|jpeg|doc|docx',
+      'max_filename'  => 5,
+      'overwrite'     => false,
+      'max_size'      => '2000',
+      // 'maintain_ratio' => true,
+      // 'encrypt_name'  => false,
+      'remove_spaces' => true,
+      'file_ext_tolower' => true
+    ];
+
+    $picture = $this->fileupload->do_upload(
+      'uploads/faculty/leave/',
+      'l_document',
+      $upload_config
+    );
+
+    // if picture is uploaded then resize the picture
+    // if ($picture !== false && $picture != null) {
+    //   $this->fileupload->do_resize(
+    //     $picture,
+    //     200,
+    //     200
+    //   );
+    // }
+    //if picture is not uploaded
+    if ($picture === false) {
+      // print_r($this->upload->display_errors())
+      $this->session->set_flashdata('exception', ($this->upload->display_errors()));
+    }
+    #-------------------------------# 
 
     #----------- Input Data ----------------#
     $data['input'] = (object) $postDataInp = array(
@@ -66,7 +101,7 @@ class Leave extends CI_Controller
       'l_is_half_day'           => $full_or_half_day,
       'l_first_or_second_half'  => ($full_or_half_day == 'half_day') ? $first_or_second_half : null,
       'l_reason'                => $this->input->post('l_reason'),
-      'l_document'              => $this->input->post('l_document'),
+      'l_document'              => $picture ?? $this->input->post('old_l_document') ?? null,
       'l_status'                => 1,
     );
 
@@ -76,7 +111,7 @@ class Leave extends CI_Controller
       if ($this->form_validation->run() === true) {
         if ($this->leave_model->create($postDataInp)) {
           #set success message
-          $this->session->set_flashdata('message', ('save_successfully'));
+          $this->session->set_flashdata('message', ('Leave applied successfully.'));
           redirect('faculty/leave/index');
         } else {
           #set exception message
@@ -108,7 +143,8 @@ class Leave extends CI_Controller
           #set exception message
           $this->session->set_flashdata('exception', ('please_try_again'));
         }
-        redirect('faculty/leave/edit/' . $postDataInp['l_id']);
+        // redirect('faculty/leave/edit/' . $postDataInp['l_id']);
+        redirect('faculty/leave/index');
       } else {
         #set exception message
         $this->session->set_flashdata('exception', ('please_try_again') . "" . validation_errors());
@@ -165,13 +201,19 @@ class Leave extends CI_Controller
   }
 
   # Not Used
-  public function delete($dept_id = null)
+  public function delete($l_id = null)
   {
-    if (empty($dept_id)) {
-      redirect('faculty/leave/create');
+    if (empty($l_id)) {
+      redirect('faculty/leave/index');
     }
-    if ($this->leave_model->delete($dept_id)) {
-      // $this->location_model->delete($loc_id);
+    // Check if leave is unapprove or pending.
+    $input     = $this->leave_model->read_by_id_as_obj($l_id);
+
+    if ($input->l_status == 1 && $this->leave_model->delete($l_id)) {
+      $file = $input->l_document;
+      if (file_exists($file)) {
+        @unlink($file);
+      }
       $this->session->set_flashdata('message', ('delete_successfully'));
     } else {
       $fk_check = $this->db->error();
@@ -181,6 +223,6 @@ class Leave extends CI_Controller
         $this->session->set_flashdata('exception', ('please_try_again'));
       }
     }
-    redirect('faculty/leave/create');
+    redirect('faculty/leave/index');
   }
 }

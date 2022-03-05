@@ -1,3 +1,4 @@
+<?php $picture = $this->session->userdata('picture'); ?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4>
 	<!-- Brand Logo -->
@@ -5,6 +6,7 @@
 	<?php
 	$logo = $this->session->userdata('logo');
 	$logo = (!empty($logo)) ? base_url($logo) : base_url('uploads/no_logo.png');
+
 	?>
 	<img src="<?php echo $logo; ?>" alt="Employee Leave MS" class="brand-image img-circlee elevation-3" style="opacity: .8">
 	<!-- <span class="brand-text font-weight-light">HYUN KUNUN</span> -->
@@ -32,7 +34,7 @@
 				<!-- Add icons to the links using the .nav-icon class
               with font-awesome or any other icon font library -->
 				<li class="nav-item">
-					<a href="<?php echo base_url('faculty/home/index') ?>" class="nav-link <?php echo (($this->uri->segment(1) == 'admin') && (($this->uri->segment(2) == 'home')) ? "active" : null) ?>">
+					<a href="<?php echo base_url('faculty/home/index') ?>" class="nav-link <?php echo (($this->uri->segment(1) == 'faculty') && (($this->uri->segment(2) == 'home')) ? "active" : null) ?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							<?= ('Dashboard'); ?>

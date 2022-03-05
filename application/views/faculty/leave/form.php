@@ -99,9 +99,22 @@
                 <!-- l_reason -->
                 <div class="col-sm-4">
                   <div class="form-group">
-                    <label for="l_reason">Reason</label>
-                    <textarea name="l_reason" id="l_reason" class="form-control" rows="3" placeholder="" data-toggle="tooltip" title="Please put forward you reason!"><?= $input->l_reason; ?></textarea>
+                    <label for="l_reason">Reason</label><i class="req text-danger"> *</i>
+                    <textarea name="l_reason" id="l_reason" class="form-control" rows="1" placeholder="" data-toggle="tooltip" title="Please put forward you reason!"><?= $input->l_reason; ?></textarea>
                     <?php echo form_error('l_reason', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
+                </div>
+
+                <!-- l_document -->
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="l_document" class=""><?php echo ('Document') ?></label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" name="l_document" id="l_document" value="<?php echo $input->l_document ?>">
+                      <label class="custom-file-label" for="l_document">Choose file</label>
+                    </div>
+                    <?php echo form_error('l_document', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                    <input type="hidden" name="old_l_document" value="<?php echo $input->l_document ?>">
                   </div>
                 </div>
 
@@ -184,10 +197,14 @@
                     </td>
                     <td><?php echo $out = strlen($leave->l_comments) > 300 ? substr($leave->l_comments, 0, 300) . "..." : $leave->l_comments; ?></td>
                     <td class="text-center" width="100">
-                      <?php if (!in_array($leave->l_status, [2, 3])) { ?>
+                      <?php if (in_array($leave->l_status, [1])) { ?>
+
+                        <?php if (!empty($leave->l_document)) { ?>
+                          <a href="<?php echo base_url($leave->l_document) ?>" target="_BLANK" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></a>
+                        <?php } ?>
                         <a href="<?php echo base_url("faculty/leave/edit/$leave->l_id/$leave->u_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a>
-                        <!-- <a href="<?php echo base_url("admin/leave/edit/$leave->l_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a> -->
-                        <!-- <a href="<?php echo base_url("admin/leave/delete/$leave->l_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a> -->
+                        <!-- <a href="<?php echo base_url("faculty/leave/edit/$leave->l_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i></a> -->
+                        <a href="<?php echo base_url("faculty/leave/delete/$leave->l_id/") ?>" class="btn btn-xs btn-danger" onclick="return confirm('<?php echo ('are_you_sure') ?>') "><i class="fa fa-trash"></i></a>
                       <?php } ?>
                     </td>
                   </tr>
