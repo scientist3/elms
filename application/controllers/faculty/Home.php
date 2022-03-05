@@ -22,7 +22,8 @@ class Home  extends CI_Controller
 
 	public function index()
 	{
-		$data['title'] = 'Faculty Home';
+		$data['title'] = 'Faculty Dashboard';
+		// $data['title'] = 'Faculty Dashboard - Report (' . date('Y') . ')';
 
 		$data['leave_statistics_by_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 		$data['user_role_list'] = $this->common_model->get_user_roles();
