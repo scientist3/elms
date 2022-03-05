@@ -8,7 +8,7 @@
         <span class="info-box-icon bg-warning"><i class="far fa-clock"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Pending</span>
-          <span class="info-box-number"><?= valArr($leave_status) ? $leave_status[0]->total_days ?? 0 : 0; ?></span>
+          <span class="info-box-number"><?= $leave_statistics_by_status[1]->total_days ?? 0; ?></span>
         </div>
       </div>
 
@@ -16,7 +16,7 @@
         <span class="info-box-icon bg-success"><i class="fa fa-check"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Approved</span>
-          <span class="info-box-number"><?= valArr($leave_status) ? $leave_status[1]->total_days ?? 0 : 0; ?></span>
+          <span class="info-box-number"><?= $leave_statistics_by_status[2]->total_days ?? 0; ?></span>
         </div>
       </div>
 
@@ -24,7 +24,7 @@
         <span class="info-box-icon bg-danger"><i class="fa fa-ban"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Rejected</span>
-          <span class="info-box-number"><?= valArr($leave_status) ? $leave_status[2]->total_days ?? 0 : 0; ?></span>
+          <span class="info-box-number"><?= $leave_statistics_by_status[3]->total_days ?? 0; ?></span>
         </div>
       </div>
 
@@ -32,7 +32,7 @@
         <span class="info-box-icon bg-info"><i class="fa fa-calculator"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Total</span>
-          <span class="info-box-number"><?= valArr($leave_status) ? $leave_status[0]->total_days ?? 0 + $leave_status[1]->total_days ?? 0 + $leave_status[2]->total_days ?? 0 : 0; ?></span>
+          <span class="info-box-number"><?= $leave_statistics_by_status['total_leaves'] ?? 0; ?></span>
         </div>
       </div>
     </div>

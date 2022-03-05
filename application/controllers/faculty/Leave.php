@@ -28,7 +28,7 @@ class Leave extends CI_Controller
     $leave_id = $this->input->post('l_id');
     $full_or_half_day = $this->input->post('l_is_half_day');
     $first_or_second_half = $this->input->post('l_first_or_second_half');
-    $data['leave_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
+    $data['leave_statistics_by_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 
 
     // print_r($data);
@@ -162,7 +162,7 @@ class Leave extends CI_Controller
     $data['title'] = ('Leave | Time Off');
     $data['subtitle'] = ('Add Time Off Request');
     $data['user_role_list'] = $this->common_model->get_user_roles();
-    $data['leave_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
+    $data['leave_statistics_by_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($this->user_id);
 
     $data['full_half_list'] = [
       'full_day' => 'Full Day',

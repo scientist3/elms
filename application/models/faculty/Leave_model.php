@@ -103,7 +103,7 @@ class Leave_model extends CI_Model
 
   public function get_toal_leaves_by_status_by_user_id($u_id)
   {
-    return $this->db->select(
+    $result = $this->db->select(
       'l_status,
       l_user_id,
       SUM( 
@@ -117,6 +117,21 @@ class Leave_model extends CI_Model
       ->group_by('l_status')
       ->order_by('`leaves_tbl`.`l_status` ASC')
       ->get()->result();
+
+    if (valArr($result)) {
+      $result = rekeyArray('l_status', $result);
+      $total = 0;
+      foreach ($result as $leave_type_id => $objLeaveStatus) {
+        $total += $objLeaveStatus->total_days;
+      }
+      $result['total_leaves'] = $total;
+    } else {
+      $result[1] = (object) ['total_days' => 0];
+      $result[2] = (object) ['total_days' => 0];
+      $result[3] = (object) ['total_days' => 0];
+      $result['total_leaves'] = 0;
+    }
+    return $result;
   }
 
   public function read_allowed_leaves_by_leave_type($lt_id)
