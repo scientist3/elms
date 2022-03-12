@@ -101,6 +101,13 @@
 							</a>
 						</li>
 
+						<li class="nav-item">
+							<a href="<?php echo base_url("admin/leave/others") ?>" class="nav-link <?php echo ($this->uri->segment(3) == "others") ? "active" : null; ?>">
+								<i class="far fa-circle nav-icon"></i>
+								<p><?php echo ('Leave History') ?></p>
+							</a>
+						</li>
+
 					</ul>
 				</li>
 

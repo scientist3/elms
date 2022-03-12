@@ -79,7 +79,7 @@
       <div class="card">
         <div class="card-header bg-dark">
           <h3 class="card-title">
-            <i class="fa fa-list"></i> Pending Time Off Requests
+            <i class="fa fa-list"></i> Time Off Requests
           </h3>
           <!-- <a class="btn btn-warning pull-right" href="< ?= base_url('admin/transaction/payment_report/').$search->start_date.'/'.$search->end_date; ?>"><i class="fa fa-print"></i></a> -->
         </div>
@@ -91,24 +91,22 @@
                 <!-- <th><?php echo ('Unique Id') ?></th> -->
                 <th><?php echo ('Faculty Name') ?></th>
                 <!-- <th><?php echo ('Designation') ?></th> -->
+                <!-- <th><?php echo ('Department') ?></th> -->
                 <th><?php echo ('Type') ?></th>
                 <th width="12%"><?php echo ('From Date') ?></th>
                 <th width="12%"><?php echo ('To Date') ?></th>
-                <th width="12%"><?php echo ('No Of Days') ?></th>
                 <th><?php echo ('Reason') ?></th>
-                <!-- <th><?php echo ('Status') ?></th> -->
+                <th><?php echo ('Status') ?></th>
                 <th><?php echo ('Action') ?></th>
               </tr>
             </thead>
             <tbody>
-
               <?php if (!empty($leaves)) { ?>
                 <?php $sl = 1; ?>
                 <?php foreach ($leaves as $leave) { ?>
                   <tr>
                     <!-- <td><?php echo $sl; ?></td> -->
                     <td>
-
                       <h2 class="table-avatar">
                         <a href="#profile.html" class="avatar"><img alt="" src="<?= !empty($leave->u_picture) ? base_url($leave->u_picture) : ''; ?>"></a>
                         <a> <?php echo ucfirst($leave->faculty_name) ?>
@@ -116,28 +114,16 @@
                           <span class="dept"><?php echo $leave->faculty_dept ?></span>
                         </a>
                       </h2>
-
                     </td>
                     <!-- <td><?php echo $leave->faculty_desg ?></td> -->
                     <!-- <td><?php echo $leave->faculty_dept ?></td> -->
                     <td><?php echo $leave->leave_type ?></td>
                     <td><?php echo date('d-M-Y', strtotime($leave->l_from_date)) ?></td>
                     <td><?php echo date('d-M-Y', strtotime($leave->l_to_date)) ?></td>
-                    <td class="d-flex justify-content-center">
-                      <span class="badge badge-success">
-                        <?php
-                        $earlier = new DateTime($leave->l_from_date);
-                        $later = new DateTime($leave->l_to_date);
-
-                        $abs_diff = $later->diff($earlier)->format("%a"); //3
-                        echo $abs_diff != 0 ? $abs_diff : 1;
-                        ?>
-                      </span>
-                    </td>
                     <td><?php echo $out = strlen($leave->l_reason) > 50 ? substr($leave->l_reason, 0, 50) . "..." : $leave->l_reason; ?></td>
-                    <!-- <td class="text-center">
+                    <td class="text-center">
                       <?php echo $leave->ls_name ?>
-                    </td> -->
+                    </td>
                     <td class="text-center" width="100">
                       <?php if (!in_array($leave->l_id, [])) { ?>
                         <a href="<?php echo base_url("admin/leave/view/$leave->l_id/$leave->u_id") ?>" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></a>

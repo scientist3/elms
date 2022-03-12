@@ -38,6 +38,20 @@ class Leave extends CI_Controller
     $this->load->view('admin/layout/wrapper', $data);
   }
 
+  public function others()
+  {
+    $data['title'] = ('Leave | Time Off');
+    $data['subtitle'] = ('Add Time Off Request');
+    $data['user_role_list'] = $this->common_model->get_user_roles();
+
+    $data['leave_types_list'] = $this->lt_model->read_as_list();
+    $data['leave_status_list'] = $this->ls_model->read_as_list();
+    $data['leaves'] = $this->leave_model->read_with_join([], false, [1, 2, 3]);
+    // print_r($data);
+    $data['contents'] = $this->load->view('admin/leave/other_leaves_view', $data, true);
+    $this->load->view('admin/layout/wrapper', $data);
+  }
+
   public function view($l_id, $user_id)
   {
     // $this->create();
@@ -53,8 +67,12 @@ class Leave extends CI_Controller
     $data['leave_types_list'] = $this->ltdm_model->read_leave_type_by_designation($desg_id);
     $data['leave_status_list'] = $this->ls_model->read_as_list();
     $data['leave'] = $this->leave_model->read_with_join_by_id($l_id);
+    $data['leave_statistics_by_status'] = $this->leave_model->get_toal_leaves_by_status_by_user_id($user_id);
 
-    $data['contents'] = $this->load->view('admin/leave/view', $data, true);
+    $data['leave_statistics_by_leave_type'] = $this->leave_model->get_total_leaves_by_leave_type_by_user_id($user_id);
+
+    // dd($data['leave_statistics_by_leave_type']);
+    $data['contents'] = $this->load->view('admin/leave/view1', $data, true);
     $this->load->view('admin/layout/wrapper', $data);
   }
   # used functional

@@ -57,6 +57,7 @@ class Faculty extends CI_Controller
       'u_password'      => !empty($password) ? md5($password) : ((!empty($old_password)) ? $old_password : md5('faculty@123')),
       'u_mobile'        => $this->input->post('u_mobile'),
       'u_dou'           => date('Y-m-d H:m:s'),
+      'u_enable_edits'  => $this->input->post('u_enable_edits'),
       'u_status'        => $this->input->post('u_status'),
     );
 
@@ -132,6 +133,7 @@ class Faculty extends CI_Controller
       // 'u_picture'        $input->u_id => ,
       // 'u_user_approval'  $input->u_id => 1,
       // 'u_doc'            $input->u_id => ,
+      'u_enable_edits'  =>  $input->u_enable_edits,
       'u_dou'           =>  $input->u_dou,
       'u_status'        =>  $input->u_status,
     );

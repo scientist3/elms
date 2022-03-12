@@ -100,20 +100,42 @@
                   </div>
                 </div>
 
+                <!-- u_enable_edits -->
+                <div class="col-sm-3">
+                  <div class="form-group ">
+                    <label for="u_enable_edits"><?php echo ('Enable Full Profile Edits'); ?></label>
+                    <div class="form-check row form-inline form-control-sm">
+                      <div class="col-6 form-inline">
+                        <label class="  radio-inline">
+                          <input type="radio" name="u_enable_edits" value="1" <?= ($input->u_enable_edits == '1' || ($input->u_enable_edits != '0')) ? 'checked' : null; ?> data-toggle="tooltip" title="Enable Edits">&nbsp;
+                          <?php echo ('Yes') ?>
+                        </label>
+                      </div>
+                      <div class="col-6 form-inline">
+                        <label class=" radio-inline">
+                          <input type="radio" name="u_enable_edits" value="0" <?= ($input->u_enable_edits == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled Edits"> &nbsp;<?php echo ('No') ?>
+                        </label>
+                      </div>
+                      <br>
+                    </div>
+                    <?php echo form_error('u_enable_edits', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
+                </div>
+
                 <!-- u_status -->
                 <div class="col-sm-3">
                   <div class="form-group ">
                     <label for="u_status"><?php echo ('Status'); ?></label>
                     <div class="form-check row form-inline form-control-sm">
                       <div class="col-6 form-inline">
-                        <label class="  radio-inline">
-                          <input type="radio" name="u_status" value="1" <?= ($input->u_status == '1' || ($input->u_status != '0')) ? 'checked' : null; ?> data-toggle="tooltip" title="Active status">&nbsp;
+                        <label class="  radio-inline" data-toggle="tooltip" title="Active status">
+                          <input type="radio" name="u_status" value="1" <?= ($input->u_status == '1' || ($input->u_status != '0')) ? 'checked' : null; ?>>&nbsp;
                           <?php echo ('Active') ?>
                         </label>
                       </div>
                       <div class="col-6 form-inline">
-                        <label class=" radio-inline">
-                          <input type="radio" name="u_status" value="0" <?= ($input->u_status == '0') ? 'checked' : null; ?> data-toggle="tooltip" title="Disabled status"> &nbsp;<?php echo ('Inactive') ?>
+                        <label class=" radio-inline" data-toggle="tooltip" title="Faculty Will not be able to login.">
+                          <input type="radio" name="u_status" value="0" <?= ($input->u_status == '0') ? 'checked' : null; ?>> &nbsp;<?php echo ('Inactive') ?>
                         </label>
                       </div>
                       <br>
