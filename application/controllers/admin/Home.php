@@ -9,6 +9,8 @@ class Home  extends CI_Controller
 		parent::__construct();
 
 		$this->load->model(['common_model', 'admin/leave_model' => 'l_model']);
+		if ($this->session->userdata('isLogIn') == false || $this->session->userdata('user_role') != 1)
+			redirect('login');
 	}
 
 	public function index()
